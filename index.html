@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-app-version="5">
+<html lang="es" data-app-version="6">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -239,7 +239,7 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
         <p class="sec-note">Arriba, el par que más ha descansado</p>
         <ul class="slots" id="slots"></ul>
       </section>
-      <p class="ver">Versión 5</p>
+      <p class="ver">Versión 6</p>
     </section>
 
     <section id="view-hist" aria-label="Historial" hidden>
@@ -669,31 +669,7 @@ function renderHero() {
     return;
   }
 
-  const open = openUse();
-  if (open) {
-    const s = shoeById(open.s);
-    el.innerHTML = heroCard(s,
-      '<span class="live-dot" aria-hidden="true"></span>En uso',
-      `<span class="live-text" data-since="${open.a}">${elapsedText(open.a)}</span>, desde las ${fmtTime(open.a)}`,
-      `<button type="button" class="btn primary" data-action="end">Terminar uso</button>
-       <button type="button" class="btn text" data-action="switch">Cambiar de par</button>`);
-    hydrate(el);
-    return;
-  }
-
-  const todays = usesOn(t);
-  if (todays.length) {
-    const main = todays[0];
-    const d = durOf(main);
-    el.innerHTML = heroCard(shoeById(main.s), 'Hoy usaste',
-      `${useSummary(main)}${d != null ? `, ${fmtDur(d)}` : ''}`,
-      `<button type="button" class="btn" data-action="switch">Usar otro par</button>
-       <button type="button" class="btn text" data-action="day" data-date="${t}">Editar el día</button>`);
-    hydrate(el);
-    return;
-  }
-
-  // Sin par en uso hoy: no hay sugerencia; solo un aviso si un uso anterior quedó sin hora de fin
+  // Arriba solo aparece un aviso si un uso anterior quedó sin hora de fin
   const pd = prevDay(t);
   const stale = pd ? state.uses.find((u) => u.d === pd && u.a != null && u.b == null) : null;
   el.innerHTML = stale ? `<p class="note solo">${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></p>` : '';
@@ -705,7 +681,7 @@ function slotHtml(s, ctx) {
   const live = open && open.s === s.id;
   const current = s.id === currentId;
   let meta, right = '<span></span>';
-  if (live) meta = `<span class="live-text">En uso desde las ${fmtTime(open.a)}</span>`;
+  if (live) meta = `<span class="live-text">En uso desde las ${fmtTime(open.a)}, <span data-since="${open.a}">${elapsedText(open.a)}</span></span>`;
   else if (todaySet.has(s.id)) {
     const mins = todayUses.filter((u) => u.s === s.id).reduce((acc, u) => acc + (durOf(u) || 0), 0);
     meta = `Usado hoy${mins ? `, ${fmtDur(mins)}` : ''}`;
