@@ -63,6 +63,7 @@ button{touch-action:manipulation}
 .actions .btn.text{padding-inline:4px}
 .note{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:.875rem;color:var(--ink-2);line-height:1.45}
 .note strong{color:var(--ink);font-weight:500}
+.note.solo{margin:6px 0 0;padding:0;border:0}
 .linkish{all:unset;color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
 .linkish:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 
@@ -654,13 +655,14 @@ function heroCard(s, kicker, sub, actions, extra) {
 
 function renderHero() {
   const el = $('#hero');
+  el.hidden = false;
   const t = todayKey();
 
   if (!state.shoes.length) {
     el.innerHTML = booting ? '<p class="kicker">Abriendo tu zapatera…</p>' : `
       <p class="kicker">Para empezar</p>
       <h2 class="hero-name big">Tu zapatera está vacía</h2>
-      <p class="hero-sub">Tienes ${CAPACITY} espacios. Agrega los pares que usas a diario, con su foto, y cada mañana verás cuál te toca, cuál usaste por última vez y cuánto tiempo lo llevaste.</p>
+      <p class="hero-sub">Tienes ${CAPACITY} espacios. Agrega los pares que usas a diario, con su foto, y verás cuál usaste por última vez, cuál ha descansado más y cuánto tiempo lo llevaste.</p>
       <div class="actions"><button type="button" class="btn primary" data-action="add">Agregar mi primer par</button></div>`;
     return;
   }
@@ -689,21 +691,11 @@ function renderHero() {
     return;
   }
 
-  const rk = ranking(t);
-  const pick = rk[offset % rk.length];
-  const sub = pick.rest === Infinity ? 'Aún sin usar' : pick.rest === 1 ? 'Usado ayer' : `${pick.rest} días de descanso`;
-  let note = '';
+  // Sin par en uso hoy: no hay sugerencia; solo un aviso si un uso anterior quedó sin hora de fin
   const pd = prevDay(t);
-  if (pd) {
-    const stale = state.uses.find((u) => u.d === pd && u.a != null && u.b == null);
-    if (stale) note = `<p class="note">${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></p>`;
-  } else {
-    note = `<p class="note">¿Recuerdas qué usaste ayer? <button type="button" class="linkish" data-action="new-use" data-date="${addDays(t, -1)}">Anótalo</button> y la rotación arranca desde ya.</p>`;
-  }
-  el.innerHTML = heroCard(pick.shoe, 'Hoy te toca', sub,
-    `<button type="button" class="btn primary" data-action="start" data-id="${pick.shoe.id}">Usar ahora</button>
-     ${rk.length > 1 ? '<button type="button" class="btn text" data-action="next">Otra opción</button>' : ''}`, note);
-  hydrate(el);
+  const stale = pd ? state.uses.find((u) => u.d === pd && u.a != null && u.b == null) : null;
+  el.innerHTML = stale ? `<p class="note solo">${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></p>` : '';
+  el.hidden = !stale;
 }
 
 function slotHtml(s, ctx) {
