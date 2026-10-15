@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-app-version="6">
+<html lang="es" data-app-version="7">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -236,10 +236,10 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
           <h2 class="sec-title" id="colTitle">Tu zapatera</h2>
           <p class="sec-count" id="slotCount"></p>
         </div>
-        <p class="sec-note">Arriba, el par que más ha descansado</p>
+        <p class="sec-note">Cada par en su espacio, como en tu zapatera</p>
         <ul class="slots" id="slots"></ul>
       </section>
-      <p class="ver">Versión 6</p>
+      <p class="ver">Versión 7</p>
     </section>
 
     <section id="view-hist" aria-label="Historial" hidden>
@@ -360,8 +360,12 @@ function sanitize(raw) {
     const name = typeof s.name === 'string' ? s.name.trim().slice(0, 40) : '';
     if (!ID_RE.test(id) || !name || ids.has(id)) continue;
     ids.add(id);
-    out.shoes.push({ id, name, created: Number(s.created) || 0, pv: Number(s.pv) > 0 ? Number(s.pv) : 0 });
+    out.shoes.push({ id, name, created: Number(s.created) || 0, pv: Number(s.pv) > 0 ? Number(s.pv) : 0, slot: Number.isInteger(s.slot) && s.slot >= 1 && s.slot <= 99 ? s.slot : 0 });
   }
+  // Espacio fijo de cada par (los que no tienen uno lo reciben en el orden en que se agregaron)
+  const taken = new Set();
+  for (const sh of out.shoes) { if (sh.slot && !taken.has(sh.slot)) taken.add(sh.slot); else sh.slot = 0; }
+  for (const sh of out.shoes) { if (!sh.slot) { let k = 1; while (taken.has(k)) k++; sh.slot = k; taken.add(k); } }
   const seen = new Set();
   if (Array.isArray(raw.uses)) {
     for (const u of raw.uses) {
@@ -596,7 +600,7 @@ function deleteUse(i) {
   commit((st) => { st.uses = st.uses.filter((u) => u.i !== i); }, 'Uso eliminado');
 }
 
-function savePair(id, name, pending) {
+function savePair(id, name, pending, slotPref) {
   const isNew = !id;
   const pid = id || newId();
   const old = isNew ? null : shoeById(id);
@@ -615,7 +619,7 @@ function savePair(id, name, pending) {
     dropLocalPhoto(pid);
   }
   commit((st) => {
-    if (isNew) st.shoes.push({ id: pid, name, created: Date.now(), pv });
+    if (isNew) st.shoes.push({ id: pid, name, created: Date.now(), pv, slot: freeSlot(slotPref) || st.shoes.length + 1 });
     else { const x = st.shoes.find((z) => z.id === pid); if (x) Object.assign(x, { name, pv }); }
   }, isNew ? `Agregado: ${name}` : `Guardado: ${name}`, { undo: false });
   if (photoOp) remotePhoto(pid, photoOp);
@@ -715,12 +719,16 @@ function renderCollection() {
     lastSet: new Set(pd ? usesOn(pd).map((u) => u.s) : []),
     currentId: open ? open.s : todayUses.length ? todayUses[0].s : null
   };
-  const rk = ranking(todaySet.size ? addDays(t, 1) : t);
   const n = state.shoes.length;
   $('#slotCount').textContent = n <= CAPACITY ? `${n} de ${CAPACITY} espacios` : `${n} pares`;
-  let html = rk.map((r) => slotHtml(r.shoe, ctx)).join('');
-  for (let k = n; k < CAPACITY; k++) {
-    html += `<li><button type="button" class="slot empty" data-action="add">
+  // Cada par tiene su espacio fijo, como en la zapatera física
+  const bySlot = new Map(state.shoes.map((x) => [x.slot, x]));
+  const lastSlot = Math.max(CAPACITY, ...state.shoes.map((x) => x.slot));
+  let html = '';
+  for (let k = 1; k <= lastSlot; k++) {
+    const s = bySlot.get(k);
+    if (s) html += slotHtml(s, ctx);
+    else if (k <= CAPACITY) html += `<li><button type="button" class="slot empty" data-action="add" data-slot="${k}">
       <span class="slot-free">${ICON_PLUS}</span>
       <span><span class="slot-name">Espacio libre</span><span class="slot-meta">Toca para agregar un par</span></span>
       <span></span>
@@ -873,10 +881,18 @@ function refreshPhotoPick() {
   document.getElementById('removePhoto').hidden = !has;
 }
 
-function openPairForm(id) {
+function freeSlot(pref) {
+  const used = new Set(state.shoes.map((x) => x.slot));
+  if (pref && pref <= CAPACITY && !used.has(pref)) return pref;
+  for (let k = 1; k <= CAPACITY; k++) if (!used.has(k)) return k;
+  return null;
+}
+
+function openPairForm(id, slotPref) {
   const s = id ? shoeById(id) : null;
   if (id && !s) return;
-  if (!id && state.shoes.length >= CAPACITY) {
+  const slot = s ? s.slot : freeSlot(slotPref);
+  if (!id && slot == null) {
     closeSheet();
     toast(`Tu zapatera ya tiene sus ${CAPACITY} espacios ocupados. Elimina un par para agregar otro.`);
     return;
@@ -884,7 +900,7 @@ function openPairForm(id) {
   pending = null;
   const has = !!(s && s.pv && photos.has(s.id));
   openSheet(`
-    <form id="pairForm" data-id="${s ? s.id : ''}" novalidate>
+    <form id="pairForm" data-id="${s ? s.id : ''}" data-slot="${slot}" novalidate>
       <h2 class="sheet-title" id="sheet-title">${s ? 'Editar par' : 'Agregar par'}</h2>
       <p class="sheet-text">Una foto clara ayuda a reconocerlo de un vistazo.</p>
       <button type="button" class="photo-pick" id="photoPick" data-action="pick-photo" aria-label="Elegir foto">${photoPickInner(s)}</button>
@@ -928,7 +944,7 @@ function openUseForm(i, dateK) {
   const sel = u ? u.s : (first ? first.shoe.id : state.shoes[0].id);
   const a = u ? u.a : (d === t ? nowMin() : null);
   const b = u ? u.b : null;
-  const list = [...state.shoes].sort(byName);
+  const list = [...state.shoes].sort((x, y) => x.slot - y.slot);
   openSheet(`
     <form id="useForm" data-i="${u ? u.i : ''}" novalidate>
       <h2 class="sheet-title" id="sheet-title">${u ? 'Editar uso' : 'Agregar uso'}</h2>
@@ -955,7 +971,7 @@ function openUseForm(i, dateK) {
 function openSwitchSheet() {
   const t = todayKey();
   const open = openUse();
-  const list = ranking(t).filter((r) => !open || r.shoe.id !== open.s);
+  const list = ranking(t).filter((r) => !open || r.shoe.id !== open.s).sort((a, b) => a.shoe.slot - b.shoe.slot);
   if (!list.length) { toast('No hay otros pares en tu zapatera'); return; }
   openSheet(`
     <h2 class="sheet-title" id="sheet-title">¿Qué par te pones?</h2>
@@ -990,7 +1006,7 @@ sheet.addEventListener('submit', (e) => {
     const p = pending;
     pending = null;
     closeSheet();
-    savePair(id, name, p);
+    savePair(id, name, p, Number(form.dataset.slot) || null);
   } else if (form.id === 'useForm') {
     const fd = new FormData(form);
     const err = form.querySelector('#useErr');
@@ -1058,7 +1074,7 @@ document.addEventListener('click', (e) => {
   if (!el || el.disabled) return;
   const { action, id, date, i } = el.dataset;
   switch (action) {
-    case 'add': openPairForm(null); break;
+    case 'add': openPairForm(null, Number(el.dataset.slot) || null); break;
     case 'pair': openPairDetail(id); break;
     case 'edit-pair': openPairForm(id); break;
     case 'add-photo': openPairForm(id); document.getElementById('photoInput').click(); break;
