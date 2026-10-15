@@ -42,38 +42,27 @@ button{touch-action:manipulation}
 .icon-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
 .icon-btn svg{width:20px;height:20px}
 
-/* Filtros */
-.filters{display:flex;gap:8px;overflow-x:auto;margin:16px -20px 0;padding:0 20px 2px;scrollbar-width:none}
-.filters::-webkit-scrollbar{display:none}
-.fchip{flex:none;font-size:.8125rem;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 15px;min-height:36px;cursor:pointer}
-.fchip[aria-pressed="true"]{color:var(--btn-ink);background:var(--btn-bg);border-color:var(--btn-bg)}
-.fchip.rain{display:inline-flex;align-items:center;gap:6px}
-.fchip.rain svg{width:14px;height:14px}
-.fchip.rain[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-
 /* Marcos de foto y monogramas */
 .frame{position:relative;display:block;overflow:hidden;background:var(--surface)}
 .frame>img,.frame>.mono{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mono{display:grid;place-items:center;background:var(--surface);background:color-mix(in srgb,var(--tint) 30%,var(--surface));color:var(--ink);font-family:var(--serif);font-weight:500;letter-spacing:.03em;line-height:1}
 
-/* Hoy */
+/* Hoy (compacto) */
 .hero{padding:18px 0 4px}
-.hero-photo{width:100%;aspect-ratio:4/3;border-radius:22px;border:0;padding:0;margin:0 0 20px;cursor:pointer}
-.hero-photo .mono{font-size:4.2rem}
-.kicker{margin:0 0 4px;font-size:.875rem;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.hero-card{display:grid;grid-template-columns:84px minmax(0,1fr);gap:16px;align-items:center}
+.hero-photo{width:84px;height:84px;border-radius:18px;border:0;padding:0;margin:0;cursor:pointer}
+.hero-photo .mono{font-size:1.5rem}
+.hero-text{min-width:0}
+.kicker{margin:0 0 2px;font-size:.8125rem;color:var(--ink-2);display:flex;align-items:center;gap:8px}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.hero-name{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,10.5vw,2.9rem);line-height:1.04;letter-spacing:-.018em;overflow-wrap:anywhere;hyphens:auto}
-.hero-sub{margin:8px 0 0;color:var(--ink-2)}
-.timer{margin:14px 0 0;font-weight:300;font-size:3rem;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.timer small{font-size:1rem;font-weight:400;letter-spacing:0;color:var(--ink-2);margin:0 10px 0 4px}
-.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:22px}
-.note{display:flex;align-items:center;gap:12px;margin:26px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--ink-2);line-height:1.4}
+.hero-name{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(1.45rem,6.4vw,1.8rem);line-height:1.08;letter-spacing:-.012em;overflow-wrap:anywhere;hyphens:auto}
+.hero-name.big{font-size:clamp(2.1rem,10.5vw,2.9rem);line-height:1.04;letter-spacing:-.018em}
+.hero-sub{margin:4px 0 0;color:var(--ink-2);font-size:.875rem;line-height:1.4}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:16px}
+.actions .btn{min-height:44px;padding:10px 22px;font-size:.875rem}
+.actions .btn.text{padding-inline:4px}
+.note{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:.875rem;color:var(--ink-2);line-height:1.45}
 .note strong{color:var(--ink);font-weight:500}
-.note .thumb{width:36px;height:36px;border-radius:9px}
-.also{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
-.also li{display:flex;align-items:center;gap:12px;font-size:.9375rem;color:var(--ink-2);line-height:1.35}
-.also strong{color:var(--ink);font-weight:500}
-.also .thumb{width:36px;height:36px;border-radius:9px}
 .linkish{all:unset;color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
 .linkish:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 
@@ -86,18 +75,27 @@ button{touch-action:manipulation}
 .btn:active{opacity:.82}
 
 /* Zapatera: lista vertical de espacios */
-.sec{margin-top:44px}
+.sec{margin-top:34px}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .sec-title{margin:0;font-family:var(--serif);font-weight:500;font-size:1.6rem;letter-spacing:-.012em}
 .sec-count{margin:0;font-size:.8125rem;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .sec-note{margin:2px 0 10px;font-size:.8125rem;color:var(--ink-2)}
 .slots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.slot{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;min-height:100px;border-bottom:1px solid var(--line);cursor:pointer}
+.slot{all:unset;box-sizing:border-box;position:relative;isolation:isolate;width:100%;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;min-height:100px;border-bottom:1px solid var(--line);cursor:pointer}
 .slot:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:6px}
 .slot-photo{width:72px;height:72px;border-radius:16px}
 .slot-photo .mono{font-size:1.3rem}
-.slot.live .slot-photo{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--accent)}
-.slot.paused .slot-photo{opacity:.45}
+/* Par en uso: seleccionado, con las esquinas marcadas */
+.slot.current::before{content:"";position:absolute;inset:5px -10px;z-index:-1;border-radius:3px;background:rgba(217,188,140,.08);pointer-events:none}
+.slot.current::after{content:"";position:absolute;inset:5px -10px;pointer-events:none;background:
+  linear-gradient(var(--accent),var(--accent)) left top/18px 2px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) left top/2px 18px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right top/18px 2px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right top/2px 18px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) left bottom/18px 2px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) left bottom/2px 18px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right bottom/18px 2px no-repeat,
+  linear-gradient(var(--accent),var(--accent)) right bottom/2px 18px no-repeat}
 .slot-name{display:block;font-weight:500;font-size:1.0625rem;line-height:1.25;overflow-wrap:anywhere}
 .slot-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:4px;font-size:.8125rem;color:var(--ink-2);line-height:1.35}
 .live-text{color:var(--accent)}
@@ -189,12 +187,6 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 .field-error{margin:-8px 0 16px;color:var(--danger);font-size:.875rem}
 .hint{margin:-6px 0 18px;font-size:.8125rem;color:var(--ink-2)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{position:relative}
-.chip input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
-.chip span{display:inline-flex;align-items:center;min-height:38px;padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:.875rem;color:var(--ink-2)}
-.chip input:checked+span{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink)}
-.chip input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
 .photo-pick{all:unset;box-sizing:border-box;position:relative;display:block;width:100%;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:var(--surface-2);cursor:pointer;margin:0 0 8px}
 .photo-pick:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 .photo-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -202,9 +194,6 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 .photo-empty svg{width:30px;height:30px}
 .photo-pick.busy .photo-empty{border-style:solid}
 .photo-actions{display:flex;gap:18px;margin:0 0 16px}
-.toggle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:14px;margin:0 0 18px;font-size:.9375rem;color:var(--ink-2);cursor:pointer;line-height:1.4}
-.toggle strong{color:var(--ink);font-weight:500}
-.toggle input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent)}
 .pp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 10px}
 .pp-item{position:relative;display:block;cursor:pointer}
 .pp-item input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:2}
@@ -238,7 +227,6 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 
   <main>
     <section id="view-hoy" aria-label="Hoy">
-      <div class="filters" id="filters" role="group" aria-label="Tipo de calzado" hidden></div>
       <section class="hero" id="hero"></section>
 
       <section class="sec" id="collection" aria-labelledby="colTitle" hidden>
@@ -293,13 +281,10 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
 'use strict';
 
 /* ---------- Datos fijos ---------- */
-const TYPES = ['Tenis', 'Formales', 'Casuales', 'Sandalias', 'Botas', 'Deportivos', 'Otros'];
 const TINTS = ['#8C7B6B', '#6F7D72', '#6B7686', '#8A6F7A', '#7D7A64', '#6E6A80', '#6F8585', '#8A7A62'];
 const KEY = 'mi-zapatera:v2';
 const KEY_V1 = 'mi-zapatera:v1';
 const KEY_PHOTO = 'mi-zapatera:foto:';
-const KEY_RAIN = 'mi-zapatera:lluvia';
-const ICON_DROP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3.2 4 5.5 7.2 5.5 10.2a5.5 5.5 0 0 1-11 0c0-3 2.3-6.2 5.5-10.2z"/></svg>';
 const USE_CAP = 2000;
 const CAPACITY = 6;
 const DOW_LONG = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -372,15 +357,7 @@ function sanitize(raw) {
     const name = typeof s.name === 'string' ? s.name.trim().slice(0, 40) : '';
     if (!ID_RE.test(id) || !name || ids.has(id)) continue;
     ids.add(id);
-    out.shoes.push({
-      id, name,
-      type: TYPES.includes(s.type) ? s.type : 'Otros',
-      paused: !!s.paused,
-      created: Number(s.created) || 0,
-      pv: Number(s.pv) > 0 ? Number(s.pv) : 0,
-      rest: [1, 2, 3].includes(s.rest) ? s.rest : 1,
-      rain: !!s.rain
-    });
+    out.shoes.push({ id, name, created: Number(s.created) || 0, pv: Number(s.pv) > 0 ? Number(s.pv) : 0 });
   }
   const seen = new Set();
   if (Array.isArray(raw.uses)) {
@@ -421,7 +398,6 @@ const hasContent = (st) => st.shoes.length > 0 || st.uses.length > 0;
 
 let state = loadLocal() || emptyState();
 let view = 'hoy';
-let filter = 'Todos';
 let offset = 0;
 let booting = true;
 let lastDay = todayKey();
@@ -522,33 +498,11 @@ const openUse = () => { const t = todayKey(); return state.uses.find((u) => u.d 
 const lastDateOf = (id, ref) => { for (const u of state.uses) if (u.d < ref && u.s === id) return u.d; return null; };
 const prevDay = (ref) => { for (const u of state.uses) if (u.d < ref) return u.d; return null; };
 
-function rainOn() { try { return localStorage.getItem(KEY_RAIN) === todayKey(); } catch (e) { return false; } }
-function setRain(on) { try { if (on) localStorage.setItem(KEY_RAIN, todayKey()); else localStorage.removeItem(KEY_RAIN); } catch (e) {} }
-const rainActive = () => rainOn() && state.shoes.some((s) => !s.paused && s.rain);
-
-function ranking(ref, useFilter = true, useRain = useFilter) {
-  const rain = useRain && rainActive();
+function ranking(ref) {
   return state.shoes
-    .filter((s) => !s.paused && (!useFilter || filter === 'Todos' || s.type === filter) && (!rain || s.rain))
-    .map((s) => {
-      const last = lastDateOf(s.id, ref);
-      const rest = last ? diffDays(ref, last) : Infinity;
-      return { shoe: s, last, rest, ready: rest > (s.rest || 1) };
-    })
-    .sort((a, b) => (a.ready !== b.ready ? (a.ready ? -1 : 1) : a.rest !== b.rest ? b.rest - a.rest : byName(a.shoe, b.shoe)));
+    .map((s) => { const last = lastDateOf(s.id, ref); return { shoe: s, last, rest: last ? diffDays(ref, last) : Infinity }; })
+    .sort((a, b) => (a.rest !== b.rest ? b.rest - a.rest : byName(a.shoe, b.shoe)));
 }
-
-/* Fecha desde la que un par vuelve a estar disponible (null si ya descansó lo suficiente) */
-function availableFrom(s, t) {
-  const last = lastDateOf(s.id, t);
-  if (!last) return null;
-  const from = addDays(last, (s.rest || 1) + 1);
-  return from > t ? from : null;
-}
-const whenText = (k) => {
-  const n = diffDays(k, todayKey());
-  return n <= 1 ? 'mañana' : n < 7 ? `el ${DOW_LONG[parseKey(k).getDay()]}` : `el ${fmtShort(k)}`;
-};
 
 function stats(id) {
   const days = new Set();
@@ -570,10 +524,7 @@ function useSummary(u) {
   if (u.b == null) return u.d === todayKey() ? `Desde las ${fmtTime(u.a)}` : `Desde las ${fmtTime(u.a)}, sin hora de fin`;
   return `De ${fmtTime(u.a)} a ${fmtTime(u.b)}`;
 }
-const timerHtml = (a) => {
-  const m = Math.max(0, nowMin() - a), h = Math.floor(m / 60), mm = m % 60;
-  return h ? `${h}<small>h</small>${mm}<small>min</small>` : `${mm}<small>min</small>`;
-};
+const elapsedText = (a) => fmtDur(Math.max(0, nowMin() - a));
 
 /* ---------- Guardar cambios ---------- */
 function commit(mutate, msg, opts) {
@@ -604,9 +555,10 @@ function startUse(id, force) {
   const now = nowMin();
   const open = openUse();
   if (open && open.s === id) { toast('Ese par ya está en uso'); return; }
-  if (!force && !state.uses.some((u) => u.d === t && u.s === id)) {
-    const from = availableFrom(s, t);
-    if (from) { openRepeatSheet(s, diffDays(t, lastDateOf(s.id, t)), from); return; }
+  if (!force) {
+    const usedToday = state.uses.some((u) => u.d === t && u.s === id);
+    const pd = prevDay(t);
+    if (!usedToday && pd && state.uses.some((u) => u.d === pd && u.s === id)) { openRepeatSheet(s, diffDays(t, pd)); return; }
   }
   offset = 0;
   commit((st) => {
@@ -641,7 +593,7 @@ function deleteUse(i) {
   commit((st) => { st.uses = st.uses.filter((u) => u.i !== i); }, 'Uso eliminado');
 }
 
-function savePair(id, name, type, paused, pending, rest, rain) {
+function savePair(id, name, pending) {
   const isNew = !id;
   const pid = id || newId();
   const old = isNew ? null : shoeById(id);
@@ -659,14 +611,10 @@ function savePair(id, name, type, paused, pending, rest, rain) {
     photos.delete(pid);
     dropLocalPhoto(pid);
   }
-  let msg = `Guardado: ${name}`;
-  if (isNew) msg = `Agregado: ${name}`;
-  else if (paused && !old.paused) msg = `En pausa: ${name}`;
-  else if (!paused && old.paused) msg = `De vuelta en rotación: ${name}`;
   commit((st) => {
-    if (isNew) st.shoes.push({ id: pid, name, type, paused: false, created: Date.now(), pv, rest, rain });
-    else { const x = st.shoes.find((z) => z.id === pid); if (x) Object.assign(x, { name, type, paused, pv, rest, rain }); }
-  }, msg, { undo: false });
+    if (isNew) st.shoes.push({ id: pid, name, created: Date.now(), pv });
+    else { const x = st.shoes.find((z) => z.id === pid); if (x) Object.assign(x, { name, pv }); }
+  }, isNew ? `Agregado: ${name}` : `Guardado: ${name}`, { undo: false });
   if (photoOp) remotePhoto(pid, photoOp);
 }
 
@@ -685,34 +633,23 @@ function deletePair(id) {
 /* ---------- Pintar la interfaz ---------- */
 function render() {
   $('#todayDate').textContent = cap(fmtLong(todayKey()));
-  renderFilters();
   renderHero();
   renderCollection();
   renderHistory();
 }
 
-function activeTypes() {
-  const set = new Set(state.shoes.filter((s) => !s.paused).map((s) => s.type));
-  return TYPES.filter((t) => set.has(t));
-}
-
-function renderFilters() {
-  const el = $('#filters');
-  const types = activeTypes();
-  if (filter !== 'Todos' && !types.includes(filter)) { filter = 'Todos'; offset = 0; }
-  const rainy = state.shoes.some((s) => !s.paused && s.rain);
-  if (types.length < 2 && !rainy) { el.hidden = true; el.innerHTML = ''; return; }
-  el.hidden = false;
-  el.innerHTML = (rainy ? `<button type="button" class="fchip rain" data-action="rain" aria-pressed="${rainOn()}">${ICON_DROP}Hoy llueve</button>` : '') +
-    (types.length >= 2 ? ['Todos', ...types].map((t) =>
-      `<button type="button" class="fchip" data-action="filter" data-value="${t}" aria-pressed="${t === filter}">${t}</button>`
-    ).join('') : '');
-}
-
-function tomorrowNote(excludeIds) {
-  const t = todayKey();
-  const next = ranking(addDays(t, 1), true, false).find((r) => !excludeIds.has(r.shoe.id));
-  return next ? `<p class="note">${thumb(next.shoe)}<span>Mañana te toca <strong>${esc(next.shoe.name)}</strong></span></p>` : '';
+function heroCard(s, kicker, sub, actions, extra) {
+  return `
+    <div class="hero-card">
+      <button type="button" class="hero-photo frame" data-action="pair" data-id="${s.id}" aria-label="Ver ${esc(s.name)}">${visual(s)}</button>
+      <div class="hero-text">
+        <p class="kicker">${kicker}</p>
+        <h2 class="hero-name">${esc(s.name)}</h2>
+        <p class="hero-sub">${sub}</p>
+      </div>
+    </div>
+    <div class="actions">${actions}</div>
+    ${extra || ''}`;
 }
 
 function renderHero() {
@@ -722,7 +659,7 @@ function renderHero() {
   if (!state.shoes.length) {
     el.innerHTML = booting ? '<p class="kicker">Abriendo tu zapatera…</p>' : `
       <p class="kicker">Para empezar</p>
-      <h2 class="hero-name">Tu zapatera está vacía</h2>
+      <h2 class="hero-name big">Tu zapatera está vacía</h2>
       <p class="hero-sub">Tienes ${CAPACITY} espacios. Agrega los pares que usas a diario, con su foto, y cada mañana verás cuál te toca, cuál usaste por última vez y cuánto tiempo lo llevaste.</p>
       <div class="actions"><button type="button" class="btn primary" data-action="add">Agregar mi primer par</button></div>`;
     return;
@@ -731,17 +668,11 @@ function renderHero() {
   const open = openUse();
   if (open) {
     const s = shoeById(open.s);
-    el.innerHTML = `
-      <button type="button" class="hero-photo frame" data-action="pair" data-id="${s.id}" aria-label="Ver ${esc(s.name)}">${visual(s)}</button>
-      <p class="kicker"><span class="live-dot" aria-hidden="true"></span>En uso</p>
-      <h2 class="hero-name">${esc(s.name)}</h2>
-      <p class="timer" data-since="${open.a}">${timerHtml(open.a)}</p>
-      <p class="hero-sub">Desde las ${fmtTime(open.a)}</p>
-      <div class="actions">
-        <button type="button" class="btn primary" data-action="end">Terminar uso</button>
-        <button type="button" class="btn text" data-action="switch">Cambiar de par</button>
-      </div>
-      ${tomorrowNote(new Set(usesOn(t).map((u) => u.s)))}`;
+    el.innerHTML = heroCard(s,
+      '<span class="live-dot" aria-hidden="true"></span>En uso',
+      `<span class="live-text" data-since="${open.a}">${elapsedText(open.a)}</span>, desde las ${fmtTime(open.a)}`,
+      `<button type="button" class="btn primary" data-action="end">Terminar uso</button>
+       <button type="button" class="btn text" data-action="switch">Cambiar de par</button>`);
     hydrate(el);
     return;
   }
@@ -749,91 +680,51 @@ function renderHero() {
   const todays = usesOn(t);
   if (todays.length) {
     const main = todays[0];
-    const s = shoeById(main.s);
     const d = durOf(main);
-    const rest = todays.slice(1).map((u) => {
-      const x = shoeById(u.s);
-      const du = durOf(u);
-      return `<li>${thumb(x)}<span><strong>${esc(x.name)}</strong><br>${useSummary(u)}${du != null ? `, ${fmtDur(du)}` : ''}</span></li>`;
-    }).join('');
-    el.innerHTML = `
-      <button type="button" class="hero-photo frame" data-action="pair" data-id="${s.id}" aria-label="Ver ${esc(s.name)}">${visual(s)}</button>
-      <p class="kicker">Hoy usaste</p>
-      <h2 class="hero-name">${esc(s.name)}</h2>
-      <p class="hero-sub">${useSummary(main)}${d != null ? `, ${fmtDur(d)}` : ''}</p>
-      ${rest ? `<ul class="also">${rest}</ul>` : ''}
-      <div class="actions">
-        <button type="button" class="btn" data-action="switch">Usar otro par</button>
-        <button type="button" class="btn text" data-action="day" data-date="${t}">Editar el día</button>
-      </div>
-      ${tomorrowNote(new Set(todays.map((u) => u.s)))}`;
+    el.innerHTML = heroCard(shoeById(main.s), 'Hoy usaste',
+      `${useSummary(main)}${d != null ? `, ${fmtDur(d)}` : ''}`,
+      `<button type="button" class="btn" data-action="switch">Usar otro par</button>
+       <button type="button" class="btn text" data-action="day" data-date="${t}">Editar el día</button>`);
     hydrate(el);
     return;
   }
 
   const rk = ranking(t);
-  if (!rk.length) {
-    el.innerHTML = rainActive() ? `
-      <p class="kicker">Hoy te toca</p>
-      <h2 class="hero-name">Sin pares para lluvia</h2>
-      <p class="hero-sub">Ningún par de este tipo está marcado para lluvia. Cambia el filtro o desactiva «Hoy llueve».</p>` : `
-      <p class="kicker">Hoy te toca</p>
-      <h2 class="hero-name">Nada en rotación</h2>
-      <p class="hero-sub">Tus pares están en pausa. Abre uno en tu zapatera y quítale la pausa para volver a rotarlo.</p>`;
-    return;
-  }
-
   const pick = rk[offset % rk.length];
-  let sub;
-  if (!pick.ready) sub = rk.length === 1 ? 'Está en descanso, pero es tu único par disponible.' : 'Todos están en descanso; este es el que más ha descansado.';
-  else if (pick.rest === Infinity) sub = 'Aún sin usar.';
-  else sub = `${pick.rest} días de descanso.`;
-  if (rainActive()) sub += ' Aguanta lluvia.';
-
-  let notes = '';
+  const sub = pick.rest === Infinity ? 'Aún sin usar' : pick.rest === 1 ? 'Usado ayer' : `${pick.rest} días de descanso`;
+  let note = '';
   const pd = prevDay(t);
   if (pd) {
-    const lastU = state.uses.find((u) => u.d === pd);
-    const ls = shoeById(lastU.s);
-    notes += `<p class="note">${thumb(ls)}<span>Último uso: <strong>${esc(ls.name)}</strong>, ${agoText(diffDays(t, pd))}.</span></p>`;
     const stale = state.uses.find((u) => u.d === pd && u.a != null && u.b == null);
-    if (stale) notes += `<p class="note"><span>${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></span></p>`;
+    if (stale) note = `<p class="note">${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></p>`;
   } else {
-    notes = `<p class="note"><span>¿Recuerdas qué usaste ayer? <button type="button" class="linkish" data-action="new-use" data-date="${addDays(t, -1)}">Anótalo</button> y la rotación arranca desde ya.</span></p>`;
+    note = `<p class="note">¿Recuerdas qué usaste ayer? <button type="button" class="linkish" data-action="new-use" data-date="${addDays(t, -1)}">Anótalo</button> y la rotación arranca desde ya.</p>`;
   }
-
-  el.innerHTML = `
-    <button type="button" class="hero-photo frame" data-action="pair" data-id="${pick.shoe.id}" aria-label="Ver ${esc(pick.shoe.name)}">${visual(pick.shoe)}</button>
-    <p class="kicker">Hoy te toca</p>
-    <h2 class="hero-name">${esc(pick.shoe.name)}</h2>
-    <p class="hero-sub">${sub}</p>
-    <div class="actions">
-      <button type="button" class="btn primary" data-action="start" data-id="${pick.shoe.id}">Usar ahora</button>
-      ${rk.length > 1 ? '<button type="button" class="btn text" data-action="next">Otra opción</button>' : ''}
-    </div>
-    ${notes}`;
+  el.innerHTML = heroCard(pick.shoe, 'Hoy te toca', sub,
+    `<button type="button" class="btn primary" data-action="start" data-id="${pick.shoe.id}">Usar ahora</button>
+     ${rk.length > 1 ? '<button type="button" class="btn text" data-action="next">Otra opción</button>' : ''}`, note);
   hydrate(el);
 }
 
 function slotHtml(s, ctx) {
-  const { t, open, todaySet, todayUses, lastSet } = ctx;
+  const { t, open, todaySet, todayUses, lastSet, currentId } = ctx;
   const live = open && open.s === s.id;
+  const current = s.id === currentId;
   let meta, right = '<span></span>';
-  if (s.paused) meta = `${esc(s.type)}<span class="pill">En pausa</span>`;
-  else if (live) meta = `<span class="live-text">En uso desde las ${fmtTime(open.a)}</span>`;
+  if (live) meta = `<span class="live-text">En uso desde las ${fmtTime(open.a)}</span>`;
   else if (todaySet.has(s.id)) {
     const mins = todayUses.filter((u) => u.s === s.id).reduce((acc, u) => acc + (durOf(u) || 0), 0);
     meta = `Usado hoy${mins ? `, ${fmtDur(mins)}` : ''}`;
   } else {
     const last = lastDateOf(s.id, t);
-    const from = availableFrom(s, t);
-    meta = `${esc(s.type)}${lastSet.has(s.id) ? '<span class="pill">Último</span>' : ''}${from ? `<span>Disponible ${whenText(from)}</span>` : ''}`;
-    if (last) {
+    if (!last) meta = 'Sin usar todavía';
+    else {
       const d = diffDays(t, last);
+      meta = lastSet.has(s.id) ? '<span class="pill">Último</span>' : `Último uso: ${esc(cap(fmtShort(last)))}`;
       right = `<span class="slot-rest"><b>${d}</b><span>${d === 1 ? 'día' : 'días'}</span></span>`;
-    } else right = '<span class="slot-rest"><span>sin usar</span></span>';
+    }
   }
-  return `<li><button type="button" class="slot${live ? ' live' : ''}${s.paused ? ' paused' : ''}" data-action="pair" data-id="${s.id}">
+  return `<li><button type="button" class="slot${current ? ' current' : ''}" data-action="pair" data-id="${s.id}"${current ? ' aria-current="true"' : ''}>
     <span class="slot-photo frame">${visual(s)}</span>
     <span><span class="slot-name">${esc(s.name)}</span><span class="slot-meta">${meta}</span></span>
     ${right}
@@ -845,23 +736,25 @@ function renderCollection() {
   if (!state.shoes.length) { wrap.hidden = true; return; }
   wrap.hidden = false;
   const t = todayKey();
+  const open = openUse();
   const todayUses = usesOn(t);
   const todaySet = new Set(todayUses.map((u) => u.s));
   const pd = todaySet.size ? null : prevDay(t);
-  const ctx = { t, open: openUse(), todaySet, todayUses, lastSet: new Set(pd ? usesOn(pd).map((u) => u.s) : []) };
+  const ctx = {
+    t, open, todaySet, todayUses,
+    lastSet: new Set(pd ? usesOn(pd).map((u) => u.s) : []),
+    currentId: open ? open.s : todayUses.length ? todayUses[0].s : null
+  };
   const rk = ranking(todaySet.size ? addDays(t, 1) : t);
-  const paused = rainActive() ? [] : state.shoes.filter((s) => s.paused && (filter === 'Todos' || s.type === filter)).sort(byName);
   const n = state.shoes.length;
   $('#slotCount').textContent = n <= CAPACITY ? `${n} de ${CAPACITY} espacios` : `${n} pares`;
-  let html = rk.map((r) => slotHtml(r.shoe, ctx)).join('') + paused.map((s) => slotHtml(s, ctx)).join('');
-  if (filter === 'Todos' && !rainActive()) {
-    for (let k = n; k < CAPACITY; k++) {
-      html += `<li><button type="button" class="slot empty" data-action="add">
-        <span class="slot-free">${ICON_PLUS}</span>
-        <span><span class="slot-name">Espacio libre</span><span class="slot-meta">Toca para agregar un par</span></span>
-        <span></span>
-      </button></li>`;
-    }
+  let html = rk.map((r) => slotHtml(r.shoe, ctx)).join('');
+  for (let k = n; k < CAPACITY; k++) {
+    html += `<li><button type="button" class="slot empty" data-action="add">
+      <span class="slot-free">${ICON_PLUS}</span>
+      <span><span class="slot-name">Espacio libre</span><span class="slot-meta">Toca para agregar un par</span></span>
+      <span></span>
+    </button></li>`;
   }
   $('#slots').innerHTML = html;
   hydrate(wrap);
@@ -967,16 +860,6 @@ function openNoShoes() {
     </div>`);
 }
 
-function detailSub(s) {
-  const t = todayKey();
-  const parts = [s.type];
-  if ((s.rest || 1) > 1) parts.push(`descansa ${s.rest} días entre usos`);
-  if (s.rain) parts.push('aguanta lluvia');
-  if (s.paused) parts.push('en pausa');
-  else if (!usesOn(t).some((u) => u.s === s.id)) { const from = availableFrom(s, t); if (from) parts.push(`disponible ${whenText(from)}`); }
-  return parts.join(', ');
-}
-
 function openPairDetail(id) {
   const s = shoeById(id);
   if (!s) return;
@@ -984,23 +867,19 @@ function openPairDetail(id) {
   const open = openUse();
   const isOpen = open && open.s === id;
   const noPhoto = !(s.pv && photos.has(s.id));
-  const main = s.paused ? ''
-    : isOpen ? '<button type="button" class="btn primary" data-action="end">Terminar uso</button>'
-    : `<button type="button" class="btn primary" data-action="start" data-id="${s.id}">Usar ahora</button>`;
   openSheet(`
     <button type="button" class="photo-tap sheet-photo frame" data-action="${noPhoto ? 'add-photo' : 'edit-pair'}" data-id="${s.id}" aria-label="${noPhoto ? 'Agregar foto' : 'Editar par'}">
       ${visual(s)}${noPhoto ? '<span class="photo-hint">Agregar foto</span>' : ''}
     </button>
     <h2 class="sheet-title" id="sheet-title">${esc(s.name)}</h2>
-    <p class="sheet-sub">${esc(detailSub(s))}</p>
     <dl class="stats">
       <div><dt>Días de uso</dt><dd>${st.days}</dd></div>
       <div><dt>Tiempo total</dt><dd>${st.total ? fmtTotal(st.total) : '—'}</dd></div>
       <div><dt>Último uso</dt><dd>${st.last ? esc(dayWord(st.last)) : 'Nunca'}</dd></div>
     </dl>
     <div class="sheet-actions">
-      ${main}
-      <button type="button" class="btn${main ? ' text' : ''}" data-action="edit-pair" data-id="${s.id}">Editar</button>
+      ${isOpen ? '<button type="button" class="btn primary" data-action="end">Terminar uso</button>' : `<button type="button" class="btn primary" data-action="start" data-id="${s.id}">Usar ahora</button>`}
+      <button type="button" class="btn text" data-action="edit-pair" data-id="${s.id}">Editar</button>
     </div>`);
 }
 
@@ -1033,9 +912,7 @@ function openPairForm(id) {
     return;
   }
   pending = null;
-  const type = s ? s.type : filter !== 'Todos' ? filter : 'Tenis';
   const has = !!(s && s.pv && photos.has(s.id));
-  const restSel = s ? (s.rest || 1) : 1;
   openSheet(`
     <form id="pairForm" data-id="${s ? s.id : ''}" novalidate>
       <h2 class="sheet-title" id="sheet-title">${s ? 'Editar par' : 'Agregar par'}</h2>
@@ -1050,14 +927,6 @@ function openPairForm(id) {
         <input class="input" type="text" name="name" maxlength="40" autocomplete="off" enterkeyhint="done" placeholder="Ej. Tenis blancos" value="${s ? esc(s.name) : ''}">
       </label>
       <p class="field-error" id="nameErr" hidden>Escribe un nombre para reconocer este par.</p>
-      <fieldset class="field"><legend class="field-label">Tipo</legend>
-        <div class="chips">${TYPES.map((t) => `<label class="chip"><input type="radio" name="type" value="${t}"${t === type ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div>
-      </fieldset>
-      <fieldset class="field"><legend class="field-label">Descanso entre usos</legend>
-        <div class="chips">${[1, 2, 3].map((n) => `<label class="chip"><input type="radio" name="rest" value="${n}"${n === restSel ? ' checked' : ''}><span>${n} ${n === 1 ? 'día' : 'días'}</span></label>`).join('')}</div>
-      </fieldset>
-      <label class="toggle"><input type="checkbox" name="rain"${s && s.rain ? ' checked' : ''}><span><strong>Aguanta lluvia</strong><br>Aparece en la sugerencia cuando marques «Hoy llueve».</span></label>
-      ${s ? `<label class="toggle"><input type="checkbox" name="paused"${s.paused ? ' checked' : ''}><span><strong>En pausa</strong><br>Sale de la rotación. Útil si está en reparación o es de temporada.</span></label>` : ''}
       <div class="sheet-actions">
         <button type="submit" class="btn primary">${s ? 'Guardar' : 'Agregar par'}</button>
         <button type="button" class="btn text" data-action="close">Cancelar</button>
@@ -1085,11 +954,11 @@ function openUseForm(i, dateK) {
   if (i && !u) return;
   const t = todayKey();
   const d = u ? u.d : (dateK && DATE_RE.test(dateK) && dateK <= t ? dateK : t);
-  const first = ranking(d, false)[0];
+  const first = ranking(d)[0];
   const sel = u ? u.s : (first ? first.shoe.id : state.shoes[0].id);
   const a = u ? u.a : (d === t ? nowMin() : null);
   const b = u ? u.b : null;
-  const list = [...state.shoes].sort((x, y) => (Number(x.paused) - Number(y.paused)) || byName(x, y));
+  const list = [...state.shoes].sort(byName);
   openSheet(`
     <form id="useForm" data-i="${u ? u.i : ''}" novalidate>
       <h2 class="sheet-title" id="sheet-title">${u ? 'Editar uso' : 'Agregar uso'}</h2>
@@ -1116,38 +985,29 @@ function openUseForm(i, dateK) {
 function openSwitchSheet() {
   const t = todayKey();
   const open = openUse();
-  const list = ranking(t, false).filter((r) => !open || r.shoe.id !== open.s);
-  if (!list.length) { toast('No hay otros pares en rotación'); return; }
+  const list = ranking(t).filter((r) => !open || r.shoe.id !== open.s);
+  if (!list.length) { toast('No hay otros pares en tu zapatera'); return; }
   openSheet(`
     <h2 class="sheet-title" id="sheet-title">¿Qué par te pones?</h2>
     <p class="sheet-text">${open ? 'El par actual quedará registrado hasta ahora.' : 'El tiempo empieza a contar desde ahora.'}</p>
     <ul class="pick-grid">${list.map((r) => {
-      const meta = !r.ready ? 'En descanso' : r.rest === Infinity ? 'Sin usar' : `${r.rest} días`;
+      const meta = r.rest === Infinity ? 'Sin usar' : r.rest === 1 ? 'Usado ayer' : `${r.rest} días`;
       return `<li><button type="button" class="pick" data-action="start" data-id="${r.shoe.id}"><span class="pick-photo frame">${visual(r.shoe)}</span><span class="pick-name">${esc(r.shoe.name)}</span><span class="pick-meta">${meta}</span></button></li>`;
     }).join('')}</ul>
     <div class="sheet-actions"><button type="button" class="btn text" data-action="close">Cancelar</button></div>`);
 }
 
-function openRepeatSheet(s, n, from) {
-  const yesterday = n === 1;
-  const r = s.rest || 1;
+function openRepeatSheet(s, n) {
   openSheet(`
     <span class="sheet-photo small frame">${visual(s)}</span>
-    <h2 class="sheet-title" id="sheet-title">${yesterday ? `¿Repetir ${esc(s.name)}?` : `${esc(s.name)} está descansando`}</h2>
-    <p class="sheet-text">${yesterday ? 'Es el par que usaste ayer.' : `Lo usaste ${agoText(n)}.`} Le toca descansar ${r === 1 ? '1 día' : `${r} días`} entre usos, así que estará disponible ${whenText(from)}.</p>
+    <h2 class="sheet-title" id="sheet-title">¿Repetir ${esc(s.name)}?</h2>
+    <p class="sheet-text">Es el último par que usaste (${agoText(n)}). Si eliges otro, este descansa un día más.</p>
     <div class="sheet-actions">
       <button type="button" class="btn primary" data-action="switch">Elegir otro</button>
-      <button type="button" class="btn" data-action="start-force" data-id="${s.id}">${yesterday ? 'Sí, repetir' : 'Usarlo igual'}</button>
+      <button type="button" class="btn" data-action="start-force" data-id="${s.id}">Sí, repetir</button>
     </div>`);
 }
 
-const SYNC_DETAIL = {
-  connecting: 'Conectando con tu cuenta…',
-  cloud: 'Se guardan en tu cuenta de forma privada y se ven igual en todos tus dispositivos.',
-  saving: 'Se guardan en tu cuenta de forma privada y se ven igual en todos tus dispositivos.',
-  local: 'Se guardan solo en este dispositivo.',
-  full: 'Tu cuenta se quedó sin espacio; los cambios nuevos se guardan solo en este dispositivo.'
-};
 /* ---------- Formularios ---------- */
 sheet.addEventListener('submit', (e) => {
   const form = e.target;
@@ -1156,17 +1016,11 @@ sheet.addEventListener('submit', (e) => {
     const fd = new FormData(form);
     const name = String(fd.get('name') || '').trim().slice(0, 40);
     if (!name) { form.querySelector('#nameErr').hidden = false; form.elements.name.focus(); return; }
-    const typeRaw = String(fd.get('type') || '');
-    const type = TYPES.includes(typeRaw) ? typeRaw : 'Otros';
-    const paused = fd.get('paused') !== null;
-    const restN = Number(fd.get('rest'));
-    const rest = [1, 2, 3].includes(restN) ? restN : 1;
-    const rain = fd.get('rain') !== null;
     const id = form.dataset.id || null;
     const p = pending;
     pending = null;
     closeSheet();
-    savePair(id, name, type, paused, p, rest, rain);
+    savePair(id, name, p);
   } else if (form.id === 'useForm') {
     const fd = new FormData(form);
     const err = form.querySelector('#useErr');
@@ -1255,8 +1109,6 @@ document.addEventListener('click', (e) => {
       break;
     case 'close': closeSheet(); break;
     case 'tab': setView(el.dataset.view); break;
-    case 'filter': filter = el.dataset.value; offset = 0; render(); break;
-    case 'rain': setRain(!rainOn()); offset = 0; render(); break;
     case 'month': {
       const [y, m] = histMonth.split('-').map(Number);
       const d = new Date(y, m - 1 + Number(el.dataset.step), 1, 12);
@@ -1278,7 +1130,7 @@ function tick() {
     render();
     return;
   }
-  document.querySelectorAll('[data-since]').forEach((el) => { el.innerHTML = timerHtml(Number(el.dataset.since)); });
+  document.querySelectorAll('[data-since]').forEach((el) => { el.textContent = elapsedText(Number(el.dataset.since)); });
 }
 setInterval(tick, 20000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
