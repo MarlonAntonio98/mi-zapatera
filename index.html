@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi zapatera</title>
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Jost:wght@300..600&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#000000;--surface:#101010;--surface-2:#1B1B1B;--sheet:#0C0C0C;
+  --ink:#F2EFEA;--ink-2:#A8A39B;--ink-3:#5F5B55;--line:#232220;
+  --accent:#D9BC8C;--on-accent:#1A1408;
+  --btn-bg:#F2EFEA;--btn-ink:#000000;
+  --badge-bg:rgba(0,0,0,.6);--badge-ink:#F2EFEA;
+  --danger:#FF8A7A;--focus:#D9BC8C;--scrim:rgba(0,0,0,.78);
+  --serif:"Bodoni Moda","Didot","Bodoni 72","Times New Roman",serif;
+  --sans:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;background:var(--bg)}
+html:has(dialog[open]){overflow:hidden}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.app{max-width:480px;margin:0 auto;padding:10px 20px 112px}
+
+/* Encabezado */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 4px}
+.brand{margin:0;font-family:var(--serif);font-weight:500;font-size:1.55rem;letter-spacing:-.01em;line-height:1.1}
+.date{margin:3px 0 0;font-size:.8125rem;color:var(--ink-2)}
+.icon-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.icon-btn svg{width:20px;height:20px}
+
+/* Filtros */
+.filters{display:flex;gap:8px;overflow-x:auto;margin:16px -20px 0;padding:0 20px 2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.fchip{flex:none;font-size:.8125rem;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 15px;min-height:36px;cursor:pointer}
+.fchip[aria-pressed="true"]{color:var(--btn-ink);background:var(--btn-bg);border-color:var(--btn-bg)}
+.fchip.rain{display:inline-flex;align-items:center;gap:6px}
+.fchip.rain svg{width:14px;height:14px}
+.fchip.rain[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+
+/* Marcos de foto y monogramas */
+.frame{position:relative;display:block;overflow:hidden;background:var(--surface)}
+.frame>img,.frame>.mono{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mono{display:grid;place-items:center;background:var(--surface);background:color-mix(in srgb,var(--tint) 30%,var(--surface));color:var(--ink);font-family:var(--serif);font-weight:500;letter-spacing:.03em;line-height:1}
+
+/* Hoy */
+.hero{padding:18px 0 4px}
+.hero-photo{width:100%;aspect-ratio:4/3;border-radius:22px;border:0;padding:0;margin:0 0 20px;cursor:pointer}
+.hero-photo .mono{font-size:4.2rem}
+.kicker{margin:0 0 4px;font-size:.875rem;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hero-name{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,10.5vw,2.9rem);line-height:1.04;letter-spacing:-.018em;overflow-wrap:anywhere;hyphens:auto}
+.hero-sub{margin:8px 0 0;color:var(--ink-2)}
+.timer{margin:14px 0 0;font-weight:300;font-size:3rem;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.timer small{font-size:1rem;font-weight:400;letter-spacing:0;color:var(--ink-2);margin:0 10px 0 4px}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:22px}
+.note{display:flex;align-items:center;gap:12px;margin:26px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:.9375rem;color:var(--ink-2);line-height:1.4}
+.note strong{color:var(--ink);font-weight:500}
+.note .thumb{width:36px;height:36px;border-radius:9px}
+.also{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.also li{display:flex;align-items:center;gap:12px;font-size:.9375rem;color:var(--ink-2);line-height:1.35}
+.also strong{color:var(--ink);font-weight:500}
+.also .thumb{width:36px;height:36px;border-radius:9px}
+.linkish{all:unset;color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
+.linkish:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+/* Botones */
+.btn{font-size:.9375rem;font-weight:500;letter-spacing:.01em;min-height:48px;padding:12px 26px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.btn.primary{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.btn.text{border-color:transparent;padding-inline:4px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+.btn.danger{color:var(--danger)}
+.btn.block{width:100%}
+.btn:active{opacity:.82}
+
+/* Zapatera: lista vertical de espacios */
+.sec{margin-top:44px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.sec-title{margin:0;font-family:var(--serif);font-weight:500;font-size:1.6rem;letter-spacing:-.012em}
+.sec-count{margin:0;font-size:.8125rem;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sec-note{margin:2px 0 10px;font-size:.8125rem;color:var(--ink-2)}
+.slots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.slot{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 0;min-height:100px;border-bottom:1px solid var(--line);cursor:pointer}
+.slot:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:6px}
+.slot-photo{width:72px;height:72px;border-radius:16px}
+.slot-photo .mono{font-size:1.3rem}
+.slot.live .slot-photo{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--accent)}
+.slot.paused .slot-photo{opacity:.45}
+.slot-name{display:block;font-weight:500;font-size:1.0625rem;line-height:1.25;overflow-wrap:anywhere}
+.slot-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:4px;font-size:.8125rem;color:var(--ink-2);line-height:1.35}
+.live-text{color:var(--accent)}
+.pill{display:inline-block;padding:0 9px;border-radius:999px;border:1px solid var(--line);font-size:.75rem;color:var(--ink);line-height:1.6}
+.slot-rest{display:grid;justify-items:end;min-width:48px;text-align:right}
+.slot-rest b{font-weight:300;font-size:2rem;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.slot-rest span{font-size:.75rem;color:var(--ink-2);margin-top:4px}
+.slot-free{width:72px;height:72px;border-radius:16px;border:1px dashed var(--ink-3);display:grid;place-items:center;color:var(--ink-2)}
+.slot-free svg{width:22px;height:22px}
+.slot.empty .slot-name{font-weight:400;color:var(--ink-2)}
+
+/* Historial */
+.h-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px}
+.h-title{margin:0;font-family:var(--serif);font-weight:500;font-size:2.1rem;letter-spacing:-.018em}
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin:20px 0 2px}
+.month-label{margin:0;font-family:var(--serif);font-weight:500;font-size:1.3rem}
+.month-sum{margin:0 0 16px;font-size:.8125rem;color:var(--ink-2)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.cal-dow{text-align:center;font-size:.75rem;color:var(--ink-2);padding:2px 0 8px}
+.cal-day{all:unset;box-sizing:border-box;display:grid;justify-items:center;align-content:start;gap:5px;padding:7px 0 8px;border-radius:12px;min-height:60px;cursor:pointer}
+.cal-day:focus-visible{outline:2px solid var(--focus);outline-offset:0}
+.cal-day.today{background:var(--surface)}
+.cal-num{font-size:.8125rem;line-height:1;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.cal-day.today .cal-num{color:var(--accent);font-weight:600}
+.cal-day.multi .cal-num::after{content:"+";color:var(--accent);margin-left:1px}
+.cal-dot{width:30px;height:30px;border-radius:50%}
+.cal-dot .mono{font-size:.68rem}
+.cal-empty{width:4px;height:4px;border-radius:50%;background:var(--line);margin-top:13px}
+.cal-day.future{cursor:default}
+.cal-day.future .cal-num{color:var(--ink-3)}
+.log{list-style:none;margin:8px 0 0;padding:0}
+.log-day{margin:24px 0 2px;font-size:.8125rem;color:var(--ink-2)}
+.log-rows{list-style:none;margin:0;padding:0}
+.row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 0;min-height:64px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.row .thumb{width:44px;height:44px;border-radius:11px}
+.row-name{display:block;font-weight:500;line-height:1.3;overflow-wrap:anywhere}
+.row-time{display:block;font-size:.8125rem;color:var(--ink-2);line-height:1.35}
+.row-dur{font-size:.875rem;color:var(--ink);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.row-dur.live{color:var(--accent)}
+.empty{margin:18px 0 0;color:var(--ink-2)}
+.thumb{flex:none}
+.thumb .mono{font-size:.9rem}
+
+/* Pestañas */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-inner{max-width:480px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr}
+.tab{min-height:62px;background:none;border:0;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;align-content:center;gap:5px;font-size:.875rem;letter-spacing:.02em}
+.tab::after{content:"";width:4px;height:4px;border-radius:50%;background:transparent}
+.tab[aria-current="page"]{color:var(--ink)}
+.tab[aria-current="page"]::after{background:var(--accent)}
+
+/* Aviso */
+.toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);opacity:0;pointer-events:none;width:min(440px,calc(100% - 32px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-radius:16px;background:var(--btn-bg);color:var(--btn-ink);font-size:.9375rem;line-height:1.35;transition:opacity .2s,transform .2s;z-index:30}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{font-weight:600;color:inherit;background:none;border:0;padding:6px 2px;min-height:40px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;flex:none}
+
+/* Hoja inferior */
+dialog.sheet{border:0;border-top:1px solid var(--line);padding:0;width:100%;max-width:480px;max-height:90vh;max-height:min(90dvh,840px);margin:auto auto 0;border-radius:26px 26px 0 0;background:var(--sheet);color:var(--ink);overflow:hidden}
+dialog.sheet::backdrop{background:var(--scrim)}
+dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{transform:translateY(28px);opacity:0}to{transform:none;opacity:1}}
+.sheet-body{padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));overflow-y:auto;max-height:90vh;max-height:min(90dvh,840px);overscroll-behavior:contain}
+.sheet-grip{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 18px}
+.sheet-photo{width:100%;aspect-ratio:4/3;border-radius:20px;margin:0 0 18px}
+.sheet-photo .mono{font-size:4rem}
+.sheet-photo.small{width:96px;aspect-ratio:1;border-radius:16px}
+.sheet-photo.small .mono{font-size:1.6rem}
+.sheet-title{margin:0 0 6px;font-family:var(--serif);font-weight:500;font-size:1.75rem;line-height:1.1;letter-spacing:-.015em;overflow-wrap:anywhere}
+.sheet-sub{margin:0;color:var(--ink-2)}
+.sheet-text{margin:6px 0 18px;color:var(--ink-2)}
+.sheet-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:10px}
+.sheet-actions .btn.primary{flex:1 1 auto}
+.del{margin-top:16px}
+@media (min-width:600px){dialog.sheet{margin:auto;border-radius:26px;border:1px solid var(--line)}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 22px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats dt{font-size:.75rem;color:var(--ink-2)}
+.stats dd{margin:4px 0 0;font-family:var(--serif);font-weight:500;font-size:1.4rem;line-height:1.1}
+.photo-tap{border:0;padding:0;cursor:pointer;color:inherit;text-align:inherit}
+.photo-tap:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:22px}
+.photo-hint{position:absolute;left:12px;bottom:12px;z-index:1;padding:5px 12px;border-radius:999px;font-size:.8125rem;background:var(--badge-bg);color:var(--badge-ink);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* Formularios */
+.field{display:block;margin:0 0 18px;border:0;padding:0;min-width:0}
+.field-label{display:block;font-size:.8125rem;color:var(--ink-2);margin:0 0 8px;padding:0}
+.input{width:100%;font-size:1rem;color:var(--ink);background:var(--surface-2);border:1px solid transparent;border-radius:14px;padding:12px 14px;min-height:52px}
+.input:focus{outline:none;border-color:var(--ink)}
+.input::placeholder{color:var(--ink-3)}
+.field-error{margin:-8px 0 16px;color:var(--danger);font-size:.875rem}
+.hint{margin:-6px 0 18px;font-size:.8125rem;color:var(--ink-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;min-height:38px;padding:6px 16px;border:1px solid var(--line);border-radius:999px;font-size:.875rem;color:var(--ink-2)}
+.chip input:checked+span{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink)}
+.chip input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
+.photo-pick{all:unset;box-sizing:border-box;position:relative;display:block;width:100%;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:var(--surface-2);cursor:pointer;margin:0 0 8px}
+.photo-pick:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.photo-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo-empty{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:10px;color:var(--ink-2);font-size:.9375rem;border:1px dashed var(--ink-3);border-radius:20px}
+.photo-empty svg{width:30px;height:30px}
+.photo-pick.busy .photo-empty{border-style:solid}
+.photo-actions{display:flex;gap:18px;margin:0 0 16px}
+.toggle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:14px;margin:0 0 18px;font-size:.9375rem;color:var(--ink-2);cursor:pointer;line-height:1.4}
+.toggle strong{color:var(--ink);font-weight:500}
+.toggle input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent)}
+.pp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 10px}
+.pp-item{position:relative;display:block;cursor:pointer}
+.pp-item input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:2}
+.pp-photo{aspect-ratio:1;border-radius:12px;box-shadow:0 0 0 2px transparent;transition:box-shadow .15s}
+.pp-photo .mono{font-size:1.15rem}
+.pp-item input:checked~.pp-photo{box-shadow:0 0 0 2px var(--sheet),0 0 0 4px var(--ink)}
+.pp-item input:focus-visible~.pp-photo{outline:2px solid var(--focus);outline-offset:5px}
+.pp-name{display:block;margin-top:7px;font-size:.75rem;line-height:1.25;color:var(--ink-2);overflow-wrap:anywhere}
+.pp-item input:checked~.pp-name{color:var(--ink);font-weight:500}
+.pick-grid{list-style:none;margin:0 0 8px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 10px}
+.pick{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer}
+.pick:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:14px}
+.pick-photo{aspect-ratio:1;border-radius:14px}
+.pick-photo .mono{font-size:1.5rem}
+.pick-name{display:block;margin-top:8px;font-size:.8125rem;font-weight:500;line-height:1.25;overflow-wrap:anywhere}
+.pick-meta{display:block;font-size:.75rem;color:var(--ink-2);line-height:1.3}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1 class="brand">Mi zapatera</h1>
+      <p class="date" id="todayDate"></p>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-hoy" aria-label="Hoy">
+      <div class="filters" id="filters" role="group" aria-label="Tipo de calzado" hidden></div>
+      <section class="hero" id="hero"></section>
+
+      <section class="sec" id="collection" aria-labelledby="colTitle" hidden>
+        <div class="sec-head">
+          <h2 class="sec-title" id="colTitle">Tu zapatera</h2>
+          <p class="sec-count" id="slotCount"></p>
+        </div>
+        <p class="sec-note">Arriba, el par que más ha descansado</p>
+        <ul class="slots" id="slots"></ul>
+      </section>
+    </section>
+
+    <section id="view-hist" aria-label="Historial" hidden>
+      <div class="h-head">
+        <h2 class="h-title">Historial</h2>
+        <button class="btn text" type="button" data-action="new-use">Agregar uso</button>
+      </div>
+      <div class="month-nav">
+        <button class="icon-btn" type="button" data-action="month" data-step="-1" aria-label="Mes anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6l-6 6 6 6"/></svg>
+        </button>
+        <p class="month-label" id="monthLabel"></p>
+        <button class="icon-btn" type="button" data-action="month" data-step="1" id="nextMonth" aria-label="Mes siguiente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <p class="month-sum" id="monthSum"></p>
+      <div class="cal" id="cal"></div>
+      <ul class="log" id="log"></ul>
+    </section>
+  </main>
+</div>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="tabs-inner">
+    <button class="tab" type="button" data-action="tab" data-view="hoy" aria-current="page">Hoy</button>
+    <button class="tab" type="button" data-action="tab" data-view="hist">Historial</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastMsg"></span>
+  <button type="button" id="toastUndo" data-action="undo" hidden>Deshacer</button>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+  <div class="sheet-body" id="sheetBody"></div>
+</dialog>
+
+<script>
+(() => {
+'use strict';
+
+/* ---------- Datos fijos ---------- */
+const TYPES = ['Tenis', 'Formales', 'Casuales', 'Sandalias', 'Botas', 'Deportivos', 'Otros'];
+const TINTS = ['#8C7B6B', '#6F7D72', '#6B7686', '#8A6F7A', '#7D7A64', '#6E6A80', '#6F8585', '#8A7A62'];
+const KEY = 'mi-zapatera:v2';
+const KEY_V1 = 'mi-zapatera:v1';
+const KEY_PHOTO = 'mi-zapatera:foto:';
+const KEY_RAIN = 'mi-zapatera:lluvia';
+const ICON_DROP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3.2 4 5.5 7.2 5.5 10.2a5.5 5.5 0 0 1-11 0c0-3 2.3-6.2 5.5-10.2z"/></svg>';
+const USE_CAP = 2000;
+const CAPACITY = 6;
+const DOW_LONG = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+const DOW_SHORT = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const MON_SHORT = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+const IMG_RE = /^data:image\/(jpeg|png|webp);base64,/;
+const ICON_CAMERA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3l1.6-2.5h6.8L17 8.5h3v10H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>';
+const ICON_PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+
+/* ---------- Utilidades ---------- */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const byName = (a, b) => a.name.localeCompare(b.name, 'es');
+const newId = () => {
+  const abc = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  try {
+    const a = new Uint8Array(10);
+    crypto.getRandomValues(a);
+    return Array.from(a, (x) => abc[x % 36]).join('');
+  } catch (e) {
+    return Math.random().toString(36).slice(2, 12);
+  }
+};
+
+/* Fechas y horas locales */
+const pad = (n) => String(n).padStart(2, '0');
+const keyOf = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayKey = () => keyOf(new Date());
+const parseKey = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+const addDays = (k, n) => { const d = parseKey(k); d.setDate(d.getDate() + n); return keyOf(d); };
+const diffDays = (a, b) => Math.round((parseKey(a) - parseKey(b)) / 86400000);
+const fmtLong = (k) => { const d = parseKey(k); return `${DOW_LONG[d.getDay()]} ${d.getDate()} de ${MONTHS[d.getMonth()]}`; };
+const fmtShort = (k) => { const d = parseKey(k); return `${DOW_SHORT[d.getDay()]} ${d.getDate()} ${MON_SHORT[d.getMonth()]}`; };
+const agoText = (n) => (n <= 0 ? 'hoy' : n === 1 ? 'ayer' : n === 2 ? 'anteayer' : `hace ${n} días`);
+const dayWord = (k) => { const n = diffDays(todayKey(), k); return n === 0 ? 'Hoy' : n === 1 ? 'Ayer' : cap(fmtShort(k)); };
+const nowMin = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
+const fmtTime = (m) => { const h = Math.floor(m / 60), mm = m % 60, h12 = h % 12 || 12; return `${h12}:${pad(mm)} ${h < 12 ? 'a. m.' : 'p. m.'}`; };
+const toHHMM = (m) => `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
+const fromHHMM = (s) => { const r = /^(\d{1,2}):(\d{2})/.exec(s || ''); if (!r) return null; const h = +r[1], m = +r[2]; return h < 24 && m < 60 ? h * 60 + m : null; };
+const durOf = (u) => (u.a == null || u.b == null ? null : Math.max(0, u.b - u.a));
+const fmtDur = (min) => { const h = Math.floor(min / 60), m = min % 60; return h ? (m ? `${h} h ${m} min` : `${h} h`) : `${m} min`; };
+const fmtTotal = (min) => {
+  if (min < 60) return `${min} min`;
+  const h = min / 60;
+  return `${h >= 100 ? Math.round(h) : String(Math.round(h * 10) / 10).replace('.', ',')} h`;
+};
+
+/* ---------- Estado ---------- */
+const emptyState = () => ({ v: 2, shoes: [], uses: [], updatedAt: 0 });
+const okMin = (v) => Number.isInteger(v) && v >= 0 && v < 1440;
+
+function normalize(st) {
+  st.uses.sort((x, y) => (x.d < y.d ? 1 : x.d > y.d ? -1 : (y.a == null ? -1 : y.a) - (x.a == null ? -1 : x.a)));
+  if (st.uses.length > USE_CAP) st.uses.length = USE_CAP;
+}
+
+function sanitize(raw) {
+  const out = emptyState();
+  if (!raw || typeof raw !== 'object') return out;
+  const ids = new Set();
+  for (const s of Array.isArray(raw.shoes) ? raw.shoes : []) {
+    if (!s || typeof s !== 'object') continue;
+    const id = typeof s.id === 'string' ? s.id : '';
+    const name = typeof s.name === 'string' ? s.name.trim().slice(0, 40) : '';
+    if (!ID_RE.test(id) || !name || ids.has(id)) continue;
+    ids.add(id);
+    out.shoes.push({
+      id, name,
+      type: TYPES.includes(s.type) ? s.type : 'Otros',
+      paused: !!s.paused,
+      created: Number(s.created) || 0,
+      pv: Number(s.pv) > 0 ? Number(s.pv) : 0,
+      rest: [1, 2, 3].includes(s.rest) ? s.rest : 1,
+      rain: !!s.rain
+    });
+  }
+  const seen = new Set();
+  if (Array.isArray(raw.uses)) {
+    for (const u of raw.uses) {
+      if (!u || typeof u !== 'object' || !ids.has(u.s) || typeof u.d !== 'string' || !DATE_RE.test(u.d)) continue;
+      let i = typeof u.i === 'string' && /^[A-Za-z0-9_-]{1,24}$/.test(u.i) ? u.i : newId();
+      if (seen.has(i)) i = newId();
+      seen.add(i);
+      const a = okMin(u.a) ? u.a : null;
+      const b = a != null && okMin(u.b) && u.b >= a ? u.b : null;
+      out.uses.push({ i, s: u.s, d: u.d, a, b });
+    }
+  } else if (Array.isArray(raw.log)) {
+    // Registros de la versión anterior (un par por día, sin horas)
+    const days = new Set();
+    for (const e of raw.log) {
+      if (!e || typeof e !== 'object' || !ids.has(e.s) || typeof e.d !== 'string' || !DATE_RE.test(e.d) || days.has(e.d)) continue;
+      days.add(e.d);
+      out.uses.push({ i: newId(), s: e.s, d: e.d, a: null, b: null });
+    }
+  }
+  normalize(out);
+  out.updatedAt = Number(raw.updatedAt) || 0;
+  return out;
+}
+
+function loadLocal() {
+  try {
+    const t = localStorage.getItem(KEY);
+    if (t) return sanitize(JSON.parse(t));
+    const t1 = localStorage.getItem(KEY_V1);
+    if (t1) return sanitize(JSON.parse(t1));
+  } catch (e) {}
+  return null;
+}
+function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+const hasContent = (st) => st.shoes.length > 0 || st.uses.length > 0;
+
+let state = loadLocal() || emptyState();
+let view = 'hoy';
+let filter = 'Todos';
+let offset = 0;
+let booting = true;
+let lastDay = todayKey();
+let histMonth = todayKey().slice(0, 7);
+let syncMode = 'local';
+
+/* ---------- Fotos ---------- */
+const photos = new Map(); // id del par -> { v, url }
+
+function loadLocalPhoto(id, v) {
+  try {
+    const t = localStorage.getItem(KEY_PHOTO + id);
+    if (!t) return null;
+    const p = JSON.parse(t);
+    return p && p.v === v && typeof p.img === 'string' && IMG_RE.test(p.img) ? p.img : null;
+  } catch (e) { return null; }
+}
+function saveLocalPhoto(id, v, img) { try { localStorage.setItem(KEY_PHOTO + id, JSON.stringify({ v, img })); return true; } catch (e) { return false; } }
+function dropLocalPhoto(id) { try { localStorage.removeItem(KEY_PHOTO + id); } catch (e) {} }
+function hydrateLocalPhotos() {
+  for (const s of state.shoes) {
+    if (!s.pv) { photos.delete(s.id); continue; }
+    const cur = photos.get(s.id);
+    if (cur && cur.v === s.pv) continue;
+    const img = loadLocalPhoto(s.id, s.pv);
+    if (img) photos.set(s.id, { v: s.pv, url: img });
+  }
+}
+function cleanLocalPhotos() {
+  try {
+    const keep = new Set(state.shoes.filter((s) => s.pv).map((s) => s.id));
+    const drop = [];
+    for (let n = 0; n < localStorage.length; n++) {
+      const k = localStorage.key(n);
+      if (k && k.startsWith(KEY_PHOTO) && !keep.has(k.slice(KEY_PHOTO.length))) drop.push(k);
+    }
+    drop.forEach((k) => localStorage.removeItem(k));
+  } catch (e) {}
+}
+
+function readAsDataURL(file) {
+  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+}
+async function processImage(file) {
+  let src = null, w = 0, h = 0, done = () => {};
+  try {
+    src = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    w = src.width; h = src.height; done = () => { try { src.close(); } catch (e) {} };
+  } catch (e) {
+    const url = await readAsDataURL(file);
+    src = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
+    w = src.naturalWidth; h = src.naturalHeight;
+  }
+  if (!w || !h) throw new Error('imagen vacía');
+  let max = 900, out = null;
+  for (let pass = 0; pass < 4 && !out; pass++) {
+    const k = Math.min(1, max / Math.max(w, h));
+    const cw = Math.max(1, Math.round(w * k)), ch = Math.max(1, Math.round(h * k));
+    const c = document.createElement('canvas');
+    c.width = cw; c.height = ch;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(src, 0, 0, cw, ch);
+    for (const q of [0.84, 0.74, 0.62]) {
+      let url = c.toDataURL('image/webp', q);
+      if (!url.startsWith('data:image/webp')) url = c.toDataURL('image/jpeg', q);
+      if (url.length <= 175000) { out = url; break; }
+    }
+    max = Math.round(max * 0.75);
+  }
+  done();
+  if (!out) throw new Error('imagen muy pesada');
+  return out;
+}
+
+/* Marco con foto o monograma */
+const tintFor = (id) => { let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0; return TINTS[h % TINTS.length]; };
+const initials = (name) => {
+  const w = name.trim().split(/\s+/).filter(Boolean);
+  return ((w[0] || '?').charAt(0) + (w.length > 1 ? w[1].charAt(0) : '')).toUpperCase();
+};
+function visual(s) {
+  if (s.pv && photos.has(s.id)) return `<img data-ph="${s.id}" alt="" decoding="async">`;
+  return `<span class="mono" style="--tint:${tintFor(s.id)}" aria-hidden="true">${esc(initials(s.name))}</span>`;
+}
+function hydrate(root) {
+  root.querySelectorAll('img[data-ph]').forEach((img) => {
+    const p = photos.get(img.dataset.ph);
+    if (p && img.getAttribute('src') !== p.url) img.src = p.url;
+  });
+}
+const thumb = (s) => `<span class="thumb frame">${visual(s)}</span>`;
+
+/* ---------- Consultas ---------- */
+const shoeById = (id) => state.shoes.find((s) => s.id === id) || null;
+const usesOn = (k) => state.uses.filter((u) => u.d === k);
+const openUse = () => { const t = todayKey(); return state.uses.find((u) => u.d === t && u.a != null && u.b == null) || null; };
+const lastDateOf = (id, ref) => { for (const u of state.uses) if (u.d < ref && u.s === id) return u.d; return null; };
+const prevDay = (ref) => { for (const u of state.uses) if (u.d < ref) return u.d; return null; };
+
+function rainOn() { try { return localStorage.getItem(KEY_RAIN) === todayKey(); } catch (e) { return false; } }
+function setRain(on) { try { if (on) localStorage.setItem(KEY_RAIN, todayKey()); else localStorage.removeItem(KEY_RAIN); } catch (e) {} }
+const rainActive = () => rainOn() && state.shoes.some((s) => !s.paused && s.rain);
+
+function ranking(ref, useFilter = true, useRain = useFilter) {
+  const rain = useRain && rainActive();
+  return state.shoes
+    .filter((s) => !s.paused && (!useFilter || filter === 'Todos' || s.type === filter) && (!rain || s.rain))
+    .map((s) => {
+      const last = lastDateOf(s.id, ref);
+      const rest = last ? diffDays(ref, last) : Infinity;
+      return { shoe: s, last, rest, ready: rest > (s.rest || 1) };
+    })
+    .sort((a, b) => (a.ready !== b.ready ? (a.ready ? -1 : 1) : a.rest !== b.rest ? b.rest - a.rest : byName(a.shoe, b.shoe)));
+}
+
+/* Fecha desde la que un par vuelve a estar disponible (null si ya descansó lo suficiente) */
+function availableFrom(s, t) {
+  const last = lastDateOf(s.id, t);
+  if (!last) return null;
+  const from = addDays(last, (s.rest || 1) + 1);
+  return from > t ? from : null;
+}
+const whenText = (k) => {
+  const n = diffDays(k, todayKey());
+  return n <= 1 ? 'mañana' : n < 7 ? `el ${DOW_LONG[parseKey(k).getDay()]}` : `el ${fmtShort(k)}`;
+};
+
+function stats(id) {
+  const days = new Set();
+  let total = 0, last = null;
+  const open = openUse();
+  for (const u of state.uses) {
+    if (u.s !== id) continue;
+    days.add(u.d);
+    if (!last) last = u.d;
+    const d = durOf(u);
+    if (d) total += d;
+    else if (open && u === open) total += Math.max(0, nowMin() - u.a);
+  }
+  return { days: days.size, total, last };
+}
+
+function useSummary(u) {
+  if (u.a == null) return 'Sin hora registrada';
+  if (u.b == null) return u.d === todayKey() ? `Desde las ${fmtTime(u.a)}` : `Desde las ${fmtTime(u.a)}, sin hora de fin`;
+  return `De ${fmtTime(u.a)} a ${fmtTime(u.b)}`;
+}
+const timerHtml = (a) => {
+  const m = Math.max(0, nowMin() - a), h = Math.floor(m / 60), mm = m % 60;
+  return h ? `${h}<small>h</small>${mm}<small>min</small>` : `${mm}<small>min</small>`;
+};
+
+/* ---------- Guardar cambios ---------- */
+function commit(mutate, msg, opts) {
+  const o = Object.assign({ undo: true, expire: null }, opts);
+  const prev = clone(state);
+  mutate(state);
+  normalize(state);
+  state.updatedAt = Math.max(Date.now(), prev.updatedAt + 1);
+  saveLocal();
+  render();
+  pushRemote();
+  if (msg) {
+    toast(msg, o.undo ? () => {
+      prev.updatedAt = Math.max(Date.now(), state.updatedAt + 1);
+      state = prev;
+      offset = 0;
+      saveLocal();
+      render();
+      pushRemote();
+    } : null, o.expire);
+  }
+}
+
+function startUse(id, force) {
+  const s = shoeById(id);
+  if (!s) return;
+  const t = todayKey();
+  const now = nowMin();
+  const open = openUse();
+  if (open && open.s === id) { toast('Ese par ya está en uso'); return; }
+  if (!force && !state.uses.some((u) => u.d === t && u.s === id)) {
+    const from = availableFrom(s, t);
+    if (from) { openRepeatSheet(s, diffDays(t, lastDateOf(s.id, t)), from); return; }
+  }
+  offset = 0;
+  commit((st) => {
+    const o = st.uses.find((u) => u.d === t && u.a != null && u.b == null);
+    if (o) o.b = Math.max(o.a, now);
+    st.uses.push({ i: newId(), s: id, d: t, a: now, b: null });
+  }, open ? `Cambiaste a ${s.name}` : `${s.name}, en uso desde las ${fmtTime(now)}`);
+}
+
+function endUse() {
+  const open = openUse();
+  if (!open) return;
+  const now = nowMin();
+  const i = open.i;
+  commit((st) => { const o = st.uses.find((u) => u.i === i); if (o) o.b = Math.max(o.a, now); },
+    `Uso terminado: ${fmtDur(Math.max(0, now - open.a))}`);
+}
+
+function saveUse(i, s, d, a, b) {
+  const t = todayKey();
+  commit((st) => {
+    let u = i ? st.uses.find((x) => x.i === i) : null;
+    if (u) Object.assign(u, { s, d, a, b });
+    else { u = { i: newId(), s, d, a, b }; st.uses.push(u); }
+    if (d === t && a != null && b == null) {
+      for (const o of st.uses) if (o !== u && o.d === t && o.a != null && o.b == null) o.b = Math.max(o.a, a);
+    }
+  }, i ? 'Uso actualizado' : 'Uso agregado');
+}
+
+function deleteUse(i) {
+  commit((st) => { st.uses = st.uses.filter((u) => u.i !== i); }, 'Uso eliminado');
+}
+
+function savePair(id, name, type, paused, pending, rest, rain) {
+  const isNew = !id;
+  const pid = id || newId();
+  const old = isNew ? null : shoeById(id);
+  let pv = old ? old.pv : 0;
+  let photoOp = null;
+  if (pending && pending.kind === 'set') {
+    pv = Date.now();
+    photoOp = { kind: 'set', v: pv, url: pending.url };
+    photos.set(pid, { v: pv, url: pending.url });
+    const ok = saveLocalPhoto(pid, pv, pending.url);
+    if (!ok && !remote.on) setTimeout(() => toast('Este teléfono no tiene espacio para guardar más fotos aquí'), 3400);
+  } else if (pending && pending.kind === 'remove') {
+    pv = 0;
+    photoOp = { kind: 'remove' };
+    photos.delete(pid);
+    dropLocalPhoto(pid);
+  }
+  let msg = `Guardado: ${name}`;
+  if (isNew) msg = `Agregado: ${name}`;
+  else if (paused && !old.paused) msg = `En pausa: ${name}`;
+  else if (!paused && old.paused) msg = `De vuelta en rotación: ${name}`;
+  commit((st) => {
+    if (isNew) st.shoes.push({ id: pid, name, type, paused: false, created: Date.now(), pv, rest, rain });
+    else { const x = st.shoes.find((z) => z.id === pid); if (x) Object.assign(x, { name, type, paused, pv, rest, rain }); }
+  }, msg, { undo: false });
+  if (photoOp) remotePhoto(pid, photoOp);
+}
+
+function deletePair(id) {
+  const s = shoeById(id);
+  if (!s) return;
+  closeSheet();
+  commit((st) => {
+    st.shoes = st.shoes.filter((x) => x.id !== id);
+    st.uses = st.uses.filter((u) => u.s !== id);
+  }, `Eliminado: ${s.name}`, {
+    expire: () => { if (!shoeById(id)) { photos.delete(id); dropLocalPhoto(id); remotePhoto(id, { kind: 'remove' }); } }
+  });
+}
+
+/* ---------- Pintar la interfaz ---------- */
+function render() {
+  $('#todayDate').textContent = cap(fmtLong(todayKey()));
+  renderFilters();
+  renderHero();
+  renderCollection();
+  renderHistory();
+}
+
+function activeTypes() {
+  const set = new Set(state.shoes.filter((s) => !s.paused).map((s) => s.type));
+  return TYPES.filter((t) => set.has(t));
+}
+
+function renderFilters() {
+  const el = $('#filters');
+  const types = activeTypes();
+  if (filter !== 'Todos' && !types.includes(filter)) { filter = 'Todos'; offset = 0; }
+  const rainy = state.shoes.some((s) => !s.paused && s.rain);
+  if (types.length < 2 && !rainy) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = (rainy ? `<button type="button" class="fchip rain" data-action="rain" aria-pressed="${rainOn()}">${ICON_DROP}Hoy llueve</button>` : '') +
+    (types.length >= 2 ? ['Todos', ...types].map((t) =>
+      `<button type="button" class="fchip" data-action="filter" data-value="${t}" aria-pressed="${t === filter}">${t}</button>`
+    ).join('') : '');
+}
+
+function tomorrowNote(excludeIds) {
+  const t = todayKey();
+  const next = ranking(addDays(t, 1), true, false).find((r) => !excludeIds.has(r.shoe.id));
+  return next ? `<p class="note">${thumb(next.shoe)}<span>Mañana te toca <strong>${esc(next.shoe.name)}</strong></span></p>` : '';
+}
+
+function renderHero() {
+  const el = $('#hero');
+  const t = todayKey();
+
+  if (!state.shoes.length) {
+    el.innerHTML = booting ? '<p class="kicker">Abriendo tu zapatera…</p>' : `
+      <p class="kicker">Para empezar</p>
+      <h2 class="hero-name">Tu zapatera está vacía</h2>
+      <p class="hero-sub">Tienes ${CAPACITY} espacios. Agrega los pares que usas a diario, con su foto, y cada mañana verás cuál te toca, cuál usaste por última vez y cuánto tiempo lo llevaste.</p>
+      <div class="actions"><button type="button" class="btn primary" data-action="add">Agregar mi primer par</button></div>`;
+    return;
+  }
+
+  const open = openUse();
+  if (open) {
+    const s = shoeById(open.s);
+    el.innerHTML = `
+      <button type="button" class="hero-photo frame" data-action="pair" data-id="${s.id}" aria-label="Ver ${esc(s.name)}">${visual(s)}</button>
+      <p class="kicker"><span class="live-dot" aria-hidden="true"></span>En uso</p>
+      <h2 class="hero-name">${esc(s.name)}</h2>
+      <p class="timer" data-since="${open.a}">${timerHtml(open.a)}</p>
+      <p class="hero-sub">Desde las ${fmtTime(open.a)}</p>
+      <div class="actions">
+        <button type="button" class="btn primary" data-action="end">Terminar uso</button>
+        <button type="button" class="btn text" data-action="switch">Cambiar de par</button>
+      </div>
+      ${tomorrowNote(new Set(usesOn(t).map((u) => u.s)))}`;
+    hydrate(el);
+    return;
+  }
+
+  const todays = usesOn(t);
+  if (todays.length) {
+    const main = todays[0];
+    const s = shoeById(main.s);
+    const d = durOf(main);
+    const rest = todays.slice(1).map((u) => {
+      const x = shoeById(u.s);
+      const du = durOf(u);
+      return `<li>${thumb(x)}<span><strong>${esc(x.name)}</strong><br>${useSummary(u)}${du != null ? `, ${fmtDur(du)}` : ''}</span></li>`;
+    }).join('');
+    el.innerHTML = `
+      <button type="button" class="hero-photo frame" data-action="pair" data-id="${s.id}" aria-label="Ver ${esc(s.name)}">${visual(s)}</button>
+      <p class="kicker">Hoy usaste</p>
+      <h2 class="hero-name">${esc(s.name)}</h2>
+      <p class="hero-sub">${useSummary(main)}${d != null ? `, ${fmtDur(d)}` : ''}</p>
+      ${rest ? `<ul class="also">${rest}</ul>` : ''}
+      <div class="actions">
+        <button type="button" class="btn" data-action="switch">Usar otro par</button>
+        <button type="button" class="btn text" data-action="day" data-date="${t}">Editar el día</button>
+      </div>
+      ${tomorrowNote(new Set(todays.map((u) => u.s)))}`;
+    hydrate(el);
+    return;
+  }
+
+  const rk = ranking(t);
+  if (!rk.length) {
+    el.innerHTML = rainActive() ? `
+      <p class="kicker">Hoy te toca</p>
+      <h2 class="hero-name">Sin pares para lluvia</h2>
+      <p class="hero-sub">Ningún par de este tipo está marcado para lluvia. Cambia el filtro o desactiva «Hoy llueve».</p>` : `
+      <p class="kicker">Hoy te toca</p>
+      <h2 class="hero-name">Nada en rotación</h2>
+      <p class="hero-sub">Tus pares están en pausa. Abre uno en tu zapatera y quítale la pausa para volver a rotarlo.</p>`;
+    return;
+  }
+
+  const pick = rk[offset % rk.length];
+  let sub;
+  if (!pick.ready) sub = rk.length === 1 ? 'Está en descanso, pero es tu único par disponible.' : 'Todos están en descanso; este es el que más ha descansado.';
+  else if (pick.rest === Infinity) sub = 'Aún sin usar.';
+  else sub = `${pick.rest} días de descanso.`;
+  if (rainActive()) sub += ' Aguanta lluvia.';
+
+  let notes = '';
+  const pd = prevDay(t);
+  if (pd) {
+    const lastU = state.uses.find((u) => u.d === pd);
+    const ls = shoeById(lastU.s);
+    notes += `<p class="note">${thumb(ls)}<span>Último uso: <strong>${esc(ls.name)}</strong>, ${agoText(diffDays(t, pd))}.</span></p>`;
+    const stale = state.uses.find((u) => u.d === pd && u.a != null && u.b == null);
+    if (stale) notes += `<p class="note"><span>${esc(shoeById(stale.s).name)} quedó sin hora de fin. <button type="button" class="linkish" data-action="edit-use" data-i="${stale.i}">Agregar hora</button></span></p>`;
+  } else {
+    notes = `<p class="note"><span>¿Recuerdas qué usaste ayer? <button type="button" class="linkish" data-action="new-use" data-date="${addDays(t, -1)}">Anótalo</button> y la rotación arranca desde ya.</span></p>`;
+  }
+
+  el.innerHTML = `
+    <button type="button" class="hero-photo frame" data-action="pair" data-id="${pick.shoe.id}" aria-label="Ver ${esc(pick.shoe.name)}">${visual(pick.shoe)}</button>
+    <p class="kicker">Hoy te toca</p>
+    <h2 class="hero-name">${esc(pick.shoe.name)}</h2>
+    <p class="hero-sub">${sub}</p>
+    <div class="actions">
+      <button type="button" class="btn primary" data-action="start" data-id="${pick.shoe.id}">Usar ahora</button>
+      ${rk.length > 1 ? '<button type="button" class="btn text" data-action="next">Otra opción</button>' : ''}
+    </div>
+    ${notes}`;
+  hydrate(el);
+}
+
+function slotHtml(s, ctx) {
+  const { t, open, todaySet, todayUses, lastSet } = ctx;
+  const live = open && open.s === s.id;
+  let meta, right = '<span></span>';
+  if (s.paused) meta = `${esc(s.type)}<span class="pill">En pausa</span>`;
+  else if (live) meta = `<span class="live-text">En uso desde las ${fmtTime(open.a)}</span>`;
+  else if (todaySet.has(s.id)) {
+    const mins = todayUses.filter((u) => u.s === s.id).reduce((acc, u) => acc + (durOf(u) || 0), 0);
+    meta = `Usado hoy${mins ? `, ${fmtDur(mins)}` : ''}`;
+  } else {
+    const last = lastDateOf(s.id, t);
+    const from = availableFrom(s, t);
+    meta = `${esc(s.type)}${lastSet.has(s.id) ? '<span class="pill">Último</span>' : ''}${from ? `<span>Disponible ${whenText(from)}</span>` : ''}`;
+    if (last) {
+      const d = diffDays(t, last);
+      right = `<span class="slot-rest"><b>${d}</b><span>${d === 1 ? 'día' : 'días'}</span></span>`;
+    } else right = '<span class="slot-rest"><span>sin usar</span></span>';
+  }
+  return `<li><button type="button" class="slot${live ? ' live' : ''}${s.paused ? ' paused' : ''}" data-action="pair" data-id="${s.id}">
+    <span class="slot-photo frame">${visual(s)}</span>
+    <span><span class="slot-name">${esc(s.name)}</span><span class="slot-meta">${meta}</span></span>
+    ${right}
+  </button></li>`;
+}
+
+function renderCollection() {
+  const wrap = $('#collection');
+  if (!state.shoes.length) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const t = todayKey();
+  const todayUses = usesOn(t);
+  const todaySet = new Set(todayUses.map((u) => u.s));
+  const pd = todaySet.size ? null : prevDay(t);
+  const ctx = { t, open: openUse(), todaySet, todayUses, lastSet: new Set(pd ? usesOn(pd).map((u) => u.s) : []) };
+  const rk = ranking(todaySet.size ? addDays(t, 1) : t);
+  const paused = rainActive() ? [] : state.shoes.filter((s) => s.paused && (filter === 'Todos' || s.type === filter)).sort(byName);
+  const n = state.shoes.length;
+  $('#slotCount').textContent = n <= CAPACITY ? `${n} de ${CAPACITY} espacios` : `${n} pares`;
+  let html = rk.map((r) => slotHtml(r.shoe, ctx)).join('') + paused.map((s) => slotHtml(s, ctx)).join('');
+  if (filter === 'Todos' && !rainActive()) {
+    for (let k = n; k < CAPACITY; k++) {
+      html += `<li><button type="button" class="slot empty" data-action="add">
+        <span class="slot-free">${ICON_PLUS}</span>
+        <span><span class="slot-name">Espacio libre</span><span class="slot-meta">Toca para agregar un par</span></span>
+        <span></span>
+      </button></li>`;
+    }
+  }
+  $('#slots').innerHTML = html;
+  hydrate(wrap);
+}
+
+function renderHistory() {
+  const t = todayKey();
+  const [y, m] = histMonth.split('-').map(Number);
+  $('#monthLabel').textContent = `${cap(MONTHS[m - 1])} ${y}`;
+  $('#nextMonth').disabled = histMonth >= t.slice(0, 7);
+  $('#nextMonth').style.visibility = histMonth >= t.slice(0, 7) ? 'hidden' : 'visible';
+
+  const byDate = new Map();
+  for (const u of state.uses) {
+    if (!u.d.startsWith(histMonth)) continue;
+    if (!byDate.has(u.d)) byDate.set(u.d, []);
+    byDate.get(u.d).push(u);
+  }
+  let mins = 0;
+  for (const list of byDate.values()) for (const u of list) { const d = durOf(u); if (d) mins += d; }
+  const nDays = byDate.size;
+  $('#monthSum').textContent = nDays
+    ? `${nDays} ${nDays === 1 ? 'día' : 'días'} con registro${mins ? `, ${fmtTotal(mins)} en total` : ''}`
+    : 'Sin registros este mes';
+
+  const first = new Date(y, m - 1, 1, 12);
+  const daysIn = new Date(y, m, 0).getDate();
+  const lead = (first.getDay() + 6) % 7;
+  let html = ['lu', 'ma', 'mi', 'ju', 'vi', 'sá', 'do'].map((x) => `<span class="cal-dow" aria-hidden="true">${x}</span>`).join('');
+  for (let n = 0; n < lead; n++) html += '<span aria-hidden="true"></span>';
+  for (let day = 1; day <= daysIn; day++) {
+    const k = `${y}-${pad(m)}-${pad(day)}`;
+    const list = byDate.get(k) || [];
+    const main = list.slice().sort((p, q) => (durOf(q) || 0) - (durOf(p) || 0))[0];
+    const s = main ? shoeById(main.s) : null;
+    const inner = `<span class="cal-num">${day}</span>${s ? `<span class="cal-dot frame">${visual(s)}</span>` : '<span class="cal-empty"></span>'}`;
+    if (k > t) { html += `<span class="cal-day future" aria-hidden="true">${inner}</span>`; continue; }
+    const names = [...new Set(list.map((u) => shoeById(u.s).name))].join(', ');
+    const label = `${cap(fmtLong(k))}: ${names || 'sin registro'}`;
+    const multi = new Set(list.map((u) => u.s)).size > 1;
+    html += `<button type="button" class="cal-day${k === t ? ' today' : ''}${multi ? ' multi' : ''}" data-action="day" data-date="${k}" aria-label="${esc(label)}">${inner}</button>`;
+  }
+  $('#cal').innerHTML = html;
+
+  const days = [...byDate.keys()].filter((k) => k <= t).sort().reverse();
+  $('#log').innerHTML = days.length
+    ? days.map((k) => `<li><p class="log-day">${esc(cap(fmtLong(k)))}</p><ul class="log-rows">${byDate.get(k).map(rowHtml).join('')}</ul></li>`).join('')
+    : '<li class="empty">Cuando uses un par, aquí verás el día, la hora y el tiempo que lo llevaste.</li>';
+  hydrate($('#view-hist'));
+}
+
+function rowHtml(u) {
+  const s = shoeById(u.s);
+  const d = durOf(u);
+  const open = openUse();
+  const live = open && open.i === u.i;
+  const dur = live ? 'En uso' : d != null ? fmtDur(d) : '';
+  return `<li><button type="button" class="row" data-action="edit-use" data-i="${u.i}">
+    ${thumb(s)}
+    <span><span class="row-name">${esc(s.name)}</span><span class="row-time">${useSummary(u)}</span></span>
+    <span class="row-dur${live ? ' live' : ''}">${dur}</span>
+  </button></li>`;
+}
+
+function setView(v) {
+  view = v === 'hist' ? 'hist' : 'hoy';
+  $('#view-hoy').hidden = view !== 'hoy';
+  $('#view-hist').hidden = view !== 'hist';
+  document.querySelectorAll('.tab').forEach((b) => {
+    if (b.dataset.view === view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Hoja inferior ---------- */
+const sheet = $('#sheet');
+const sheetBody = $('#sheetBody');
+let pending = null;
+let delArmed = null;
+
+function openSheet(html) {
+  delArmed = null;
+  sheetBody.innerHTML = '<div class="sheet-grip" aria-hidden="true"></div>' + html;
+  sheetBody.scrollTop = 0;
+  hydrate(sheetBody);
+  if (!sheet.open) {
+    if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', '');
+  }
+}
+function closeSheet() {
+  if (!sheet.open) return;
+  if (typeof sheet.close === 'function') sheet.close(); else sheet.removeAttribute('open');
+}
+sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+
+function openNoShoes() {
+  openSheet(`
+    <h2 class="sheet-title" id="sheet-title">Primero agrega un par</h2>
+    <p class="sheet-text">Necesitas al menos un par en tu zapatera para registrar un uso.</p>
+    <div class="sheet-actions">
+      <button type="button" class="btn primary" data-action="add">Agregar par</button>
+      <button type="button" class="btn text" data-action="close">Cancelar</button>
+    </div>`);
+}
+
+function detailSub(s) {
+  const t = todayKey();
+  const parts = [s.type];
+  if ((s.rest || 1) > 1) parts.push(`descansa ${s.rest} días entre usos`);
+  if (s.rain) parts.push('aguanta lluvia');
+  if (s.paused) parts.push('en pausa');
+  else if (!usesOn(t).some((u) => u.s === s.id)) { const from = availableFrom(s, t); if (from) parts.push(`disponible ${whenText(from)}`); }
+  return parts.join(', ');
+}
+
+function openPairDetail(id) {
+  const s = shoeById(id);
+  if (!s) return;
+  const st = stats(id);
+  const open = openUse();
+  const isOpen = open && open.s === id;
+  const noPhoto = !(s.pv && photos.has(s.id));
+  const main = s.paused ? ''
+    : isOpen ? '<button type="button" class="btn primary" data-action="end">Terminar uso</button>'
+    : `<button type="button" class="btn primary" data-action="start" data-id="${s.id}">Usar ahora</button>`;
+  openSheet(`
+    <button type="button" class="photo-tap sheet-photo frame" data-action="${noPhoto ? 'add-photo' : 'edit-pair'}" data-id="${s.id}" aria-label="${noPhoto ? 'Agregar foto' : 'Editar par'}">
+      ${visual(s)}${noPhoto ? '<span class="photo-hint">Agregar foto</span>' : ''}
+    </button>
+    <h2 class="sheet-title" id="sheet-title">${esc(s.name)}</h2>
+    <p class="sheet-sub">${esc(detailSub(s))}</p>
+    <dl class="stats">
+      <div><dt>Días de uso</dt><dd>${st.days}</dd></div>
+      <div><dt>Tiempo total</dt><dd>${st.total ? fmtTotal(st.total) : '—'}</dd></div>
+      <div><dt>Último uso</dt><dd>${st.last ? esc(dayWord(st.last)) : 'Nunca'}</dd></div>
+    </dl>
+    <div class="sheet-actions">
+      ${main}
+      <button type="button" class="btn${main ? ' text' : ''}" data-action="edit-pair" data-id="${s.id}">Editar</button>
+    </div>`);
+}
+
+function photoPickInner(s) {
+  if (pending && pending.kind === 'set') return '<img id="pendingImg" alt="">';
+  if (!(pending && pending.kind === 'remove') && s && s.pv && photos.has(s.id)) return `<img data-ph="${s.id}" alt="">`;
+  return `<span class="photo-empty">${ICON_CAMERA}<span>Agregar foto</span></span>`;
+}
+function refreshPhotoPick() {
+  const form = document.getElementById('pairForm');
+  if (!form) return;
+  const s = form.dataset.id ? shoeById(form.dataset.id) : null;
+  const pick = document.getElementById('photoPick');
+  pick.classList.remove('busy');
+  pick.innerHTML = photoPickInner(s);
+  const pimg = document.getElementById('pendingImg');
+  if (pimg) pimg.src = pending.url;
+  hydrate(pick);
+  const has = !!(pick.querySelector('img'));
+  document.getElementById('photoBtn').textContent = has ? 'Cambiar foto' : 'Agregar foto';
+  document.getElementById('removePhoto').hidden = !has;
+}
+
+function openPairForm(id) {
+  const s = id ? shoeById(id) : null;
+  if (id && !s) return;
+  if (!id && state.shoes.length >= CAPACITY) {
+    closeSheet();
+    toast(`Tu zapatera ya tiene sus ${CAPACITY} espacios ocupados. Elimina un par para agregar otro.`);
+    return;
+  }
+  pending = null;
+  const type = s ? s.type : filter !== 'Todos' ? filter : 'Tenis';
+  const has = !!(s && s.pv && photos.has(s.id));
+  const restSel = s ? (s.rest || 1) : 1;
+  openSheet(`
+    <form id="pairForm" data-id="${s ? s.id : ''}" novalidate>
+      <h2 class="sheet-title" id="sheet-title">${s ? 'Editar par' : 'Agregar par'}</h2>
+      <p class="sheet-text">Una foto clara ayuda a reconocerlo de un vistazo.</p>
+      <button type="button" class="photo-pick" id="photoPick" data-action="pick-photo" aria-label="Elegir foto">${photoPickInner(s)}</button>
+      <input type="file" id="photoInput" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
+      <div class="photo-actions">
+        <button type="button" class="btn text" id="photoBtn" data-action="pick-photo">${has ? 'Cambiar foto' : 'Agregar foto'}</button>
+        <button type="button" class="btn text danger" id="removePhoto" data-action="remove-photo"${has ? '' : ' hidden'}>Quitar foto</button>
+      </div>
+      <label class="field"><span class="field-label">Nombre</span>
+        <input class="input" type="text" name="name" maxlength="40" autocomplete="off" enterkeyhint="done" placeholder="Ej. Tenis blancos" value="${s ? esc(s.name) : ''}">
+      </label>
+      <p class="field-error" id="nameErr" hidden>Escribe un nombre para reconocer este par.</p>
+      <fieldset class="field"><legend class="field-label">Tipo</legend>
+        <div class="chips">${TYPES.map((t) => `<label class="chip"><input type="radio" name="type" value="${t}"${t === type ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div>
+      </fieldset>
+      <fieldset class="field"><legend class="field-label">Descanso entre usos</legend>
+        <div class="chips">${[1, 2, 3].map((n) => `<label class="chip"><input type="radio" name="rest" value="${n}"${n === restSel ? ' checked' : ''}><span>${n} ${n === 1 ? 'día' : 'días'}</span></label>`).join('')}</div>
+      </fieldset>
+      <label class="toggle"><input type="checkbox" name="rain"${s && s.rain ? ' checked' : ''}><span><strong>Aguanta lluvia</strong><br>Aparece en la sugerencia cuando marques «Hoy llueve».</span></label>
+      ${s ? `<label class="toggle"><input type="checkbox" name="paused"${s.paused ? ' checked' : ''}><span><strong>En pausa</strong><br>Sale de la rotación. Útil si está en reparación o es de temporada.</span></label>` : ''}
+      <div class="sheet-actions">
+        <button type="submit" class="btn primary">${s ? 'Guardar' : 'Agregar par'}</button>
+        <button type="button" class="btn text" data-action="close">Cancelar</button>
+      </div>
+      ${s ? `<button type="button" class="btn text danger del" data-action="delete-pair" data-id="${s.id}">Eliminar par</button>` : ''}
+    </form>`);
+}
+
+function openDaySheet(k) {
+  if (!DATE_RE.test(k || '') || k > todayKey()) return;
+  if (!state.shoes.length) { openNoShoes(); return; }
+  const list = usesOn(k);
+  openSheet(`
+    <h2 class="sheet-title" id="sheet-title">${esc(cap(fmtLong(k)))}</h2>
+    ${list.length ? `<ul class="log-rows">${list.map(rowHtml).join('')}</ul>` : '<p class="sheet-text">Sin registros este día.</p>'}
+    <div class="sheet-actions" style="margin-top:20px">
+      <button type="button" class="btn primary" data-action="new-use" data-date="${k}">Agregar uso</button>
+      <button type="button" class="btn text" data-action="close">Cerrar</button>
+    </div>`);
+}
+
+function openUseForm(i, dateK) {
+  if (!state.shoes.length) { openNoShoes(); return; }
+  const u = i ? state.uses.find((x) => x.i === i) : null;
+  if (i && !u) return;
+  const t = todayKey();
+  const d = u ? u.d : (dateK && DATE_RE.test(dateK) && dateK <= t ? dateK : t);
+  const first = ranking(d, false)[0];
+  const sel = u ? u.s : (first ? first.shoe.id : state.shoes[0].id);
+  const a = u ? u.a : (d === t ? nowMin() : null);
+  const b = u ? u.b : null;
+  const list = [...state.shoes].sort((x, y) => (Number(x.paused) - Number(y.paused)) || byName(x, y));
+  openSheet(`
+    <form id="useForm" data-i="${u ? u.i : ''}" novalidate>
+      <h2 class="sheet-title" id="sheet-title">${u ? 'Editar uso' : 'Agregar uso'}</h2>
+      <p class="sheet-text">Las horas son opcionales. Deja el fin vacío si aún está en uso.</p>
+      <fieldset class="field"><legend class="field-label">Par</legend>
+        <div class="pp">${list.map((s) => `<label class="pp-item"><input type="radio" name="s" value="${s.id}"${s.id === sel ? ' checked' : ''}><span class="pp-photo frame">${visual(s)}</span><span class="pp-name">${esc(s.name)}</span></label>`).join('')}</div>
+      </fieldset>
+      <label class="field"><span class="field-label">Fecha</span>
+        <input class="input" type="date" name="d" max="${t}" value="${d}">
+      </label>
+      <div class="two">
+        <label class="field"><span class="field-label">Inicio</span><input class="input" type="time" name="a" value="${a != null ? toHHMM(a) : ''}"></label>
+        <label class="field"><span class="field-label">Fin</span><input class="input" type="time" name="b" value="${b != null ? toHHMM(b) : ''}"></label>
+      </div>
+      <p class="field-error" id="useErr" hidden></p>
+      <div class="sheet-actions">
+        <button type="submit" class="btn primary">${u ? 'Guardar' : 'Agregar'}</button>
+        <button type="button" class="btn text" data-action="close">Cancelar</button>
+      </div>
+      ${u ? `<button type="button" class="btn text danger del" data-action="delete-use" data-i="${u.i}">Eliminar este uso</button>` : ''}
+    </form>`);
+}
+
+function openSwitchSheet() {
+  const t = todayKey();
+  const open = openUse();
+  const list = ranking(t, false).filter((r) => !open || r.shoe.id !== open.s);
+  if (!list.length) { toast('No hay otros pares en rotación'); return; }
+  openSheet(`
+    <h2 class="sheet-title" id="sheet-title">¿Qué par te pones?</h2>
+    <p class="sheet-text">${open ? 'El par actual quedará registrado hasta ahora.' : 'El tiempo empieza a contar desde ahora.'}</p>
+    <ul class="pick-grid">${list.map((r) => {
+      const meta = !r.ready ? 'En descanso' : r.rest === Infinity ? 'Sin usar' : `${r.rest} días`;
+      return `<li><button type="button" class="pick" data-action="start" data-id="${r.shoe.id}"><span class="pick-photo frame">${visual(r.shoe)}</span><span class="pick-name">${esc(r.shoe.name)}</span><span class="pick-meta">${meta}</span></button></li>`;
+    }).join('')}</ul>
+    <div class="sheet-actions"><button type="button" class="btn text" data-action="close">Cancelar</button></div>`);
+}
+
+function openRepeatSheet(s, n, from) {
+  const yesterday = n === 1;
+  const r = s.rest || 1;
+  openSheet(`
+    <span class="sheet-photo small frame">${visual(s)}</span>
+    <h2 class="sheet-title" id="sheet-title">${yesterday ? `¿Repetir ${esc(s.name)}?` : `${esc(s.name)} está descansando`}</h2>
+    <p class="sheet-text">${yesterday ? 'Es el par que usaste ayer.' : `Lo usaste ${agoText(n)}.`} Le toca descansar ${r === 1 ? '1 día' : `${r} días`} entre usos, así que estará disponible ${whenText(from)}.</p>
+    <div class="sheet-actions">
+      <button type="button" class="btn primary" data-action="switch">Elegir otro</button>
+      <button type="button" class="btn" data-action="start-force" data-id="${s.id}">${yesterday ? 'Sí, repetir' : 'Usarlo igual'}</button>
+    </div>`);
+}
+
+const SYNC_DETAIL = {
+  connecting: 'Conectando con tu cuenta…',
+  cloud: 'Se guardan en tu cuenta de forma privada y se ven igual en todos tus dispositivos.',
+  saving: 'Se guardan en tu cuenta de forma privada y se ven igual en todos tus dispositivos.',
+  local: 'Se guardan solo en este dispositivo.',
+  full: 'Tu cuenta se quedó sin espacio; los cambios nuevos se guardan solo en este dispositivo.'
+};
+/* ---------- Formularios ---------- */
+sheet.addEventListener('submit', (e) => {
+  const form = e.target;
+  e.preventDefault();
+  if (form.id === 'pairForm') {
+    const fd = new FormData(form);
+    const name = String(fd.get('name') || '').trim().slice(0, 40);
+    if (!name) { form.querySelector('#nameErr').hidden = false; form.elements.name.focus(); return; }
+    const typeRaw = String(fd.get('type') || '');
+    const type = TYPES.includes(typeRaw) ? typeRaw : 'Otros';
+    const paused = fd.get('paused') !== null;
+    const restN = Number(fd.get('rest'));
+    const rest = [1, 2, 3].includes(restN) ? restN : 1;
+    const rain = fd.get('rain') !== null;
+    const id = form.dataset.id || null;
+    const p = pending;
+    pending = null;
+    closeSheet();
+    savePair(id, name, type, paused, p, rest, rain);
+  } else if (form.id === 'useForm') {
+    const fd = new FormData(form);
+    const err = form.querySelector('#useErr');
+    const fail = (m) => { err.textContent = m; err.hidden = false; };
+    const t = todayKey();
+    const s = String(fd.get('s') || '');
+    const d = String(fd.get('d') || '');
+    const aRaw = String(fd.get('a') || ''), bRaw = String(fd.get('b') || '');
+    const a = fromHHMM(aRaw), b = fromHHMM(bRaw);
+    if (!shoeById(s)) return fail('Elige un par.');
+    if (!DATE_RE.test(d) || d > t) return fail('Elige una fecha de hoy o anterior.');
+    if ((aRaw && a == null) || (bRaw && b == null)) return fail('Revisa las horas.');
+    if (b != null && a == null) return fail('Agrega también la hora de inicio.');
+    if (a != null && b != null && b < a) return fail('La hora de fin debe ser después del inicio.');
+    if (d === t && a != null && a > nowMin()) return fail('La hora de inicio todavía no llega.');
+    if (d === t && b != null && b > nowMin()) return fail('La hora de fin todavía no llega.');
+    closeSheet();
+    saveUse(form.dataset.i || null, s, d, a, b);
+  }
+});
+
+sheet.addEventListener('change', async (e) => {
+  const el = e.target;
+  if (el.id !== 'photoInput') return;
+  const file = el.files && el.files[0];
+  el.value = '';
+  if (!file) return;
+  const pick = document.getElementById('photoPick');
+  if (pick) { pick.classList.add('busy'); pick.innerHTML = `<span class="photo-empty">${ICON_CAMERA}<span>Preparando foto…</span></span>`; }
+  try {
+    const url = await processImage(file);
+    pending = { kind: 'set', url };
+  } catch (err) {
+    toast('No se pudo leer esa imagen. Prueba con otra foto.');
+  }
+  refreshPhotoPick();
+});
+
+/* ---------- Aviso con Deshacer ---------- */
+let toastTimer = null, toastUndo = null, toastExpire = null;
+function flushExpire() { if (toastExpire) { const f = toastExpire; toastExpire = null; try { f(); } catch (e) {} } }
+function toast(msg, undo, expire) {
+  flushExpire();
+  $('#toastMsg').textContent = msg;
+  toastUndo = undo || null;
+  toastExpire = expire || null;
+  $('#toastUndo').hidden = !undo;
+  $('#toast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, undo ? 6000 : 3200);
+}
+function hideToast() { $('#toast').classList.remove('show'); toastUndo = null; flushExpire(); }
+function doUndo() {
+  const u = toastUndo;
+  toastUndo = null;
+  toastExpire = null;
+  clearTimeout(toastTimer);
+  $('#toast').classList.remove('show');
+  if (u) u();
+}
+
+/* ---------- Clics ---------- */
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action]');
+  if (!el || el.disabled) return;
+  const { action, id, date, i } = el.dataset;
+  switch (action) {
+    case 'add': openPairForm(null); break;
+    case 'pair': openPairDetail(id); break;
+    case 'edit-pair': openPairForm(id); break;
+    case 'add-photo': openPairForm(id); document.getElementById('photoInput').click(); break;
+    case 'pick-photo': { const inp = document.getElementById('photoInput'); if (inp) inp.click(); break; }
+    case 'remove-photo': pending = { kind: 'remove' }; refreshPhotoPick(); break;
+    case 'start': closeSheet(); startUse(id, false); break;
+    case 'start-force': closeSheet(); startUse(id, true); break;
+    case 'end': closeSheet(); endUse(); break;
+    case 'switch': openSwitchSheet(); break;
+    case 'next': offset++; renderHero(); break;
+    case 'day': openDaySheet(date); break;
+    case 'new-use': openUseForm(null, date || addDays(todayKey(), -1)); break;
+    case 'edit-use': openUseForm(i); break;
+    case 'delete-use': closeSheet(); deleteUse(i); break;
+    case 'delete-pair':
+      if (delArmed !== id) { delArmed = id; el.textContent = 'Toca otra vez para eliminar (también se borra su historial)'; }
+      else deletePair(id);
+      break;
+    case 'close': closeSheet(); break;
+    case 'tab': setView(el.dataset.view); break;
+    case 'filter': filter = el.dataset.value; offset = 0; render(); break;
+    case 'rain': setRain(!rainOn()); offset = 0; render(); break;
+    case 'month': {
+      const [y, m] = histMonth.split('-').map(Number);
+      const d = new Date(y, m - 1 + Number(el.dataset.step), 1, 12);
+      const k = keyOf(d).slice(0, 7);
+      if (k <= todayKey().slice(0, 7)) { histMonth = k; renderHistory(); }
+      break;
+    }
+    case 'undo': doUndo(); break;
+  }
+});
+
+/* ---------- Reloj: tiempo en uso y cambio de día ---------- */
+function tick() {
+  const k = todayKey();
+  if (k !== lastDay) {
+    if (histMonth === lastDay.slice(0, 7)) histMonth = k.slice(0, 7);
+    lastDay = k;
+    offset = 0;
+    render();
+    return;
+  }
+  document.querySelectorAll('[data-since]').forEach((el) => { el.innerHTML = timerHtml(Number(el.dataset.since)); });
+}
+setInterval(tick, 20000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+
+/* ---------- Guardado en la cuenta (privado para cada persona) ---------- */
+const remote = { ref: null, photos: null, on: false, writing: false, dirty: false, resubscribed: false };
+const TERMINAL = new Set(['invalid_argument', 'quota_exceeded', 'revoked', 'not_granted', 'capability_disabled', 'capability_removed', 'transform_error']);
+
+function setSync(m) {
+  syncMode = m;
+  const d = document.getElementById('syncDetail');
+  if (d) d.textContent = SYNC_DETAIL[m] || '';
+}
+function goLocal(code) {
+  if (!remote.on) return;
+  remote.on = false;
+  setSync(code === 'quota_exceeded' ? 'full' : 'local');
+  toast(code === 'quota_exceeded' ? 'Tu cuenta se quedó sin espacio; se guarda en este dispositivo' : 'Sin conexión con tu cuenta; se guarda en este dispositivo');
+}
+function finishBoot(mode) {
+  booting = false;
+  setSync(mode);
+  cleanLocalPhotos();
+  render();
+}
+
+async function pushRemote() {
+  if (!remote.on || !remote.ref) return;
+  if (remote.writing) { remote.dirty = true; return; }
+  remote.writing = true;
+  setSync('saving');
+  try {
+    do {
+      remote.dirty = false;
+      const body = clone(state);
+      try { await remote.ref.set(body); }
+      catch (e) {
+        if (e && TERMINAL.has(e.code)) throw e;
+        await sleep(500 + Math.random() * 900);
+        await remote.ref.set(body);
+      }
+    } while (remote.dirty);
+    setSync('cloud');
+  } catch (e) {
+    goLocal(e && e.code);
+  } finally {
+    remote.writing = false;
+  }
+}
+
+const photoChain = new Map();
+function remotePhoto(id, op) {
+  if (!remote.on || !remote.photos) return;
+  const run = async () => {
+    const ref = remote.photos.doc(id);
+    const act = () => (op.kind === 'set' ? ref.set({ v: op.v, img: op.url }) : ref.delete());
+    try { await act(); }
+    catch (e) {
+      if (e && e.code === 'quota_exceeded') { toast('Tu cuenta no tiene espacio para más fotos; esta queda en este dispositivo'); return; }
+      if (e && TERMINAL.has(e.code)) return;
+      await sleep(600 + Math.random() * 900);
+      try { await act(); } catch (e2) {}
+    }
+  };
+  const next = (photoChain.get(id) || Promise.resolve()).then(run);
+  photoChain.set(id, next);
+}
+
+const fetchedV = new Map();
+let fetching = false;
+async function syncPhotos() {
+  if (!remote.on || !remote.photos || fetching) return;
+  fetching = true;
+  try {
+    let need;
+    do {
+      need = state.shoes.filter((s) => s.pv && (!photos.has(s.id) || photos.get(s.id).v !== s.pv) && fetchedV.get(s.id) !== s.pv);
+      for (const s of need) {
+        fetchedV.set(s.id, s.pv);
+        try {
+          const snap = await remote.photos.doc(s.id).get();
+          const d = snap && snap.exists ? snap.data() : null;
+          if (d && typeof d.img === 'string' && IMG_RE.test(d.img)) {
+            const v = Number(d.v) || s.pv;
+            photos.set(s.id, { v, url: d.img });
+            saveLocalPhoto(s.id, v, d.img);
+            render();
+          }
+        } catch (e) {}
+      }
+    } while (need.length);
+  } finally {
+    fetching = false;
+  }
+}
+
+function adopt(incoming) {
+  state = incoming;
+  saveLocal();
+  hydrateLocalPhotos();
+  render();
+  syncPhotos();
+}
+
+function subscribe() {
+  try {
+    remote.ref.onSnapshot((snap) => {
+      if (!snap || !snap.exists) return;
+      if (snap.metadata && snap.metadata.hasPendingWrites) return;
+      if (remote.writing || remote.dirty) return;
+      const incoming = sanitize(snap.data());
+      if (incoming.updatedAt > state.updatedAt) adopt(incoming);
+    }, (err) => {
+      if (err && err.code === 'unavailable' && !remote.resubscribed) { remote.resubscribed = true; setTimeout(subscribe, 1500); return; }
+      goLocal(err && err.code);
+    });
+  } catch (e) { /* sin actualizaciones en vivo; el guardado sigue funcionando */ }
+}
+
+async function initCloud() {
+  const c = window.claude;
+  if (!c || typeof c.use !== 'function') return finishBoot('local');
+  setSync('connecting');
+  let db = null, user = null;
+  try { [db, user] = await Promise.all([c.use('db'), c.use('user')]); } catch (e) {}
+  if (!db || !user) return finishBoot('local');
+  let uid = null;
+  try { uid = await user.id(); } catch (e) {}
+  if (!uid) return finishBoot('local');
+  let ref, photosRef;
+  try { ref = db.doc('data/users/' + uid + '/zapatera'); photosRef = ref.collection('fotos'); }
+  catch (e) { return finishBoot('local'); }
+  let snap;
+  try { snap = await ref.get(); }
+  catch (e) {
+    if (e && TERMINAL.has(e.code)) return finishBoot('local');
+    await sleep(600 + Math.random() * 800);
+    try { snap = await ref.get(); } catch (e2) { return finishBoot('local'); }
+  }
+  remote.ref = ref;
+  remote.photos = photosRef;
+  remote.on = true;
+  const incoming = snap && snap.exists ? sanitize(snap.data()) : null;
+  if (incoming && incoming.updatedAt >= state.updatedAt) {
+    state = incoming;
+    saveLocal();
+    hydrateLocalPhotos();
+    finishBoot('cloud');
+  } else {
+    finishBoot('cloud');
+    if (hasContent(state)) {
+      pushRemote();
+      for (const s of state.shoes) {
+        const p = s.pv ? photos.get(s.id) : null;
+        if (p) remotePhoto(s.id, { kind: 'set', v: p.v, url: p.url });
+      }
+    }
+  }
+  syncPhotos();
+  subscribe();
+}
+
+/* ---------- Arranque ---------- */
+try { localStorage.removeItem('mi-zapatera:look'); } catch (e) {}
+hydrateLocalPhotos();
+render();
+initCloud();
+})();
+</script>
+</body>
+</html>
