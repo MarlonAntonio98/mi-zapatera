@@ -1,6 +1,6 @@
 'use strict';
 // Cuando cambies cualquier archivo de la app, sube este número (v2, v3...) para que el celular descargue la versión nueva.
-const VERSION = 'zapatera-v1';
+const VERSION = 'zapatera-v2';
 const FILES = ['./', 'index.html', 'fonts.css', 'manifest.webmanifest', 'icon.svg', 'icon-180.png', 'icon-192.png', 'icon-512.png',
   'fonts/BodoniModa-latin.woff2', 'fonts/BodoniModa-latin-ext.woff2', 'fonts/Jost-latin.woff2', 'fonts/Jost-latin-ext.woff2'];
 

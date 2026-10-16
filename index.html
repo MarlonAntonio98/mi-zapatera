@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-app-version="8">
+<html lang="es" data-app-version="9">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -84,7 +84,7 @@ button{touch-action:manipulation}
 
 /* Zapatera: lista vertical de espacios */
 .sec{margin-top:34px}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.sec-head{display:flex;align-items:baseline;justify-content:flex-end;gap:12px;margin-bottom:10px}
 .sec-title{margin:0;font-family:var(--serif);font-weight:500;font-size:1.6rem;letter-spacing:-.012em}
 .sec-count{margin:0;font-size:.8125rem;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .sec-note{margin:2px 0 10px;font-size:.8125rem;color:var(--ink-2)}
@@ -239,15 +239,13 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
     <section id="view-hoy" aria-label="Hoy">
       <section class="hero" id="hero"></section>
 
-      <section class="sec" id="collection" aria-labelledby="colTitle" hidden>
+      <section class="sec" id="collection" aria-label="Tus pares" hidden>
         <div class="sec-head">
-          <h2 class="sec-title" id="colTitle">Tu zapatera</h2>
           <p class="sec-count" id="slotCount"></p>
         </div>
-        <p class="sec-note">Cada par en su espacio, como en tu zapatera</p>
         <ul class="slots" id="slots"></ul>
       </section>
-      <p class="ver">Versión 8</p>
+      <p class="ver">Versión 9</p>
     </section>
 
     <section id="view-hist" aria-label="Historial" hidden>
