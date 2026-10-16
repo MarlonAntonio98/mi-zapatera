@@ -1,13 +1,19 @@
 <!doctype html>
-<html lang="es" data-app-version="7">
+<html lang="es" data-app-version="8">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mi zapatera</title>
 <meta name="theme-color" content="#000000">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Jost:wght@300..600&display=swap">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Mi zapatera">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="fonts.css">
 <style>
 :root{
   color-scheme:dark;
@@ -23,11 +29,11 @@
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;background:var(--bg)}
+html{overscroll-behavior-y:none;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;background:var(--bg)}
 html:has(dialog[open]){overflow:hidden}
 *,*::before,*::after{box-sizing:inherit}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+body{margin:0;overscroll-behavior-y:none;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 button,input{font:inherit;color:inherit}
 button{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
@@ -39,6 +45,7 @@ button{touch-action:manipulation}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 4px}
 .brand{margin:0;font-family:var(--serif);font-weight:500;font-size:1.55rem;letter-spacing:-.01em;line-height:1.1}
 .date{margin:3px 0 0;font-size:.8125rem;color:var(--ink-2)}
+.install-btn{min-height:38px;padding:8px 18px;font-size:.8125rem;flex:none}
 .icon-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
 .icon-btn svg{width:20px;height:20px}
 
@@ -225,6 +232,7 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
       <h1 class="brand">Mi zapatera</h1>
       <p class="date" id="todayDate"></p>
     </div>
+    <button class="btn primary install-btn" type="button" id="installBtn" hidden>Instalar</button>
   </header>
 
   <main>
@@ -239,7 +247,7 @@ dialog.sheet[open] .sheet-body{animation:rise .3s cubic-bezier(.2,.8,.2,1)}
         <p class="sec-note">Cada par en su espacio, como en tu zapatera</p>
         <ul class="slots" id="slots"></ul>
       </section>
-      <p class="ver">Versión 7</p>
+      <p class="ver">Versión 8</p>
     </section>
 
     <section id="view-hist" aria-label="Historial" hidden>
@@ -1304,7 +1312,18 @@ try { localStorage.removeItem('mi-zapatera:look'); } catch (e) {}
 hydrateLocalPhotos();
 render();
 initCloud();
-checkForUpdate();
+
+/* ---------- App instalable y sin internet ---------- */
+if ('serviceWorker' in navigator && window.isSecureContext) navigator.serviceWorker.register('sw.js', { scope: './' }).catch(() => {});
+let installEvt = null;
+const installBtn = document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; installBtn.hidden = false; });
+window.addEventListener('appinstalled', () => { installEvt = null; installBtn.hidden = true; });
+installBtn.addEventListener('click', async () => {
+  if (!installEvt) return;
+  const e = installEvt; installEvt = null; installBtn.hidden = true;
+  try { await e.prompt(); await e.userChoice; } catch (err) {}
+});
 })();
 </script>
 </body>
